@@ -1,13 +1,13 @@
 angular.module('coupon', []);
 
-// login controller
+// login controller for admin, company and customer//
 angular.module('coupon').controller(
 		'loginController',
 		function($scope, $http) {
 			// on load
 			$scope.loginResult = "no body";
 
-			// on click
+			// admin login
 			$scope.login = function() {
 				$http.post(
 						"rest/admin/login/" + $scope.user + "/" + $scope.pass)
@@ -15,6 +15,7 @@ angular.module('coupon').controller(
 							$scope.loginResult = response;
 						});
 			};
+			// admin customer
 			$scope.logincust = function() {
 				$http.post(
 						"rest/customer/login/" + $scope.user + "/" + $scope.pass)
@@ -22,6 +23,7 @@ angular.module('coupon').controller(
 							$scope.loginResult = response;
 						});
 			};
+			// admin company
 			$scope.logincomp = function() {
 				$http.post(
 						"rest/company/login/" + $scope.user + "/" + $scope.pass)
@@ -116,3 +118,43 @@ angular.module('coupon').controller(
 						});
 			};
 		});
+
+/////////company servise////////
+/*angular.module('coupon').controller(
+		'companyController',
+		function($scope, $http, $location) {
+		///////company/////////
+			// get all companies
+			$scope.viewAllcoupons = function() {
+				$http.get("rest/admin/getAllCoupons").success(
+						function(response) {
+							$scope.coupons = response;
+						});
+			};
+			// new coupon
+			$scope.getnewcoup = function() {
+				$http.post(
+						"rest/admin/createCoupon/" + $scope.CustName + "/"
+								+ $scope.pass).success(
+						function(response) {
+							$scope.newcoup= response;
+						});
+			};
+			// DeleteCoupon
+			$scope.erasecoupon = function() {
+				$http.post("rest/admin/DeleteCustomer/" + $scope.id).success(
+						function(response) {
+							$scope.deletecoupon= response;
+						});
+			};
+			// updateCoupon
+			$scope.updatecoupon = function() {
+				$http.put(
+						"rest/admin/updateCoupon/" + $scope.id + "/"
+								+ $scope.pass ).success(
+						function(response) {
+							$scope.updatecoupon = response;
+						});
+			};
+		});
+*/

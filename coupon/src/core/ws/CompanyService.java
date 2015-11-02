@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -98,11 +100,11 @@ public class CompanyService {
 		facade.createCoupon(coupon);
 		return "created";
 	}
-	@GET
-	@Path("updateCoupon")
+	@PUT
+	@Path("updateCoupon/{coupon}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String updateCoupon(@QueryParam("coupon") String jsonCoupon) {
+	public String updateCoupon(@PathParam("coupon") String jsonCoupon) {
 		HttpSession session = request.getSession(false);
 
 		if (session == null) {
@@ -123,11 +125,11 @@ public class CompanyService {
 		}
 		return "Coupon was updated successfuly.";
 	}
-	@GET
-	@Path("removeCoupon")
+	@DELETE
+	@Path("removeCoupon/{coupon}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String removeCoupon(@QueryParam("coupon") String jsonCoupon) {
+	public String removeCoupon(@PathParam("coupon") String jsonCoupon) {
 		HttpSession session = request.getSession(false);
 
 		if (session == null) {
@@ -149,9 +151,9 @@ public class CompanyService {
 		return "Coupon was removed successfuly.";
 	}
 	@GET
-	@Path("ByType") // JSon Coupon
+	@Path("ByType/{type}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<Coupon> getCouponsByType(@QueryParam("type") CouponType type) {
+	public Collection<Coupon> getCouponsByType(@PathParam("type") CouponType type) {
 
 		Collection<Coupon> coupons;
 		HttpSession session = request.getSession(false);
@@ -168,9 +170,9 @@ public class CompanyService {
 		return coupons;
 	}
 	@GET
-	@Path("ById") // JSon Coupon
+	@Path("ById/{id}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
-	public Coupon getCouponsById(@QueryParam("id") long id) {
+	public Coupon getCouponsById(@PathParam("id") long id) {
 
 		Coupon coupon;
 		HttpSession session = request.getSession(false);
@@ -187,9 +189,9 @@ public class CompanyService {
 		return coupon;
 	}
 	@GET
-	@Path("Bydate") // JSon Coupon
+	@Path("Bydate/{date}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<Coupon> getCouponsByDate(@QueryParam("type") String date) {
+	public Collection<Coupon> getCouponsByDate(@PathParam("date") String date) {
 
 		Collection<Coupon> coupons;
 		HttpSession session = request.getSession(false);
