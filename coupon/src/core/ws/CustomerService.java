@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -32,10 +33,10 @@ public class CustomerService {
 	private HttpServletResponse response;
 	HttpSession session;
 
-	@GET
-	@Path("login")
+	@POST
+	@Path("login/{user}/{pass}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String login(@QueryParam("user") String user, @QueryParam("pass") String pass) {
+	public String login(@PathParam("user") String user, @PathParam("pass") String pass) {
 
 		if (request.getSession(false) != null) {
 			request.getSession(false).invalidate();
@@ -75,9 +76,9 @@ public class CustomerService {
 	}
 
 	@GET
-	@Path("ByPrice")
+	@Path("ByPrice/{price}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<Coupon> getAllPurchasedCouponsByPrice(@QueryParam("price") double price) {
+	public Collection<Coupon> getAllPurchasedCouponsByPrice(@PathParam("price") double price) {
 
 		Collection<Coupon> coupons;
 		HttpSession session = request.getSession(false);
@@ -94,9 +95,9 @@ public class CustomerService {
 	}
 
 	@GET
-	@Path("ByType") // JSon Coupon
+	@Path("ByType/{type}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<Coupon> getAllPurchasedCouponsByType(@QueryParam("type") CouponType type) {
+	public Collection<Coupon> getAllPurchasedCouponsByType(@PathParam("type") CouponType type) {
 
 		Collection<Coupon> coupons;
 		HttpSession session = request.getSession(false);
@@ -113,11 +114,11 @@ public class CustomerService {
 		return coupons;
 	}
 
-	@GET
-	@Path("purchaseCoupon")
+	@PUT
+	@Path("purchaseCoupon/{coupon}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String purchaseCoupon(@QueryParam("coupon") String jsonCoupon) {
+	public String purchaseCoupon(@PathParam("coupon") String jsonCoupon) {
 		HttpSession session = request.getSession(false);
 
 		if (session == null) {
