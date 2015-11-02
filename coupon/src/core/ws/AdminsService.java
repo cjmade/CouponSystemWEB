@@ -2,11 +2,11 @@ package core.ws;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Set;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.Consumes;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,13 +14,13 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import exceptions.DatabaseAccessError;
+
 import facades.AdminFacade;
-import facades.CustomerFacade;
+
 import objects.ClientType;
 import objects.Company;
 import objects.Customer;
@@ -32,25 +32,26 @@ public class AdminsService {
 	@Context
 	private HttpServletRequest request;
 
-	@GET
-	@Path("login")
+	@POST
+	@Path("login/{user}/{pass}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String login(@QueryParam("user") String user, @QueryParam("pass") String pass) {
+	public String login(@PathParam("user") String user, @PathParam("pass") String pass) {
 		if (request.getSession(false) != null) {
 			request.getSession(false).invalidate();
 		}
 
-		AdminFacade facade;
+		AdminFacade facade=null;
 		try {
 			CouponSystem sys = CouponSystem.getInstance();
-			facade = (AdminFacade) sys.login(user, pass, ClientType.admin);
+			facade = (AdminFacade) sys.login("admin", "1234", ClientType.admin);
 		} catch (Exception e) {
 			return e.getMessage();
 		}
 		HttpSession session = request.getSession(true);
 		session.setAttribute("facade", facade);
 		session.setAttribute("user", user);
-		return "login success";
+		session.setAttribute("pass", pass);
+		return "hello admin";
 	}
 
 	@GET

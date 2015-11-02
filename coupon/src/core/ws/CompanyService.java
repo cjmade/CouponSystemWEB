@@ -36,10 +36,10 @@ public class CompanyService {
 	@Context
 	private HttpServletResponse responce;
 
-	@GET
-	@Path("login")
+	@POST
+	@Path("login/{user}/{pass}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String login(@QueryParam("user") String user, @QueryParam("pass") String pass) {
+	public String login(@PathParam("user") String user, @PathParam("pass") String pass) {
 
 		if (request.getSession(false) != null) {
 			request.getSession(false).invalidate();
