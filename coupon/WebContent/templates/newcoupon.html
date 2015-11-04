@@ -1,0 +1,17 @@
+<!-- Adminlogin.html -->
+<div class="container">
+    <h2>please insert the coupon details </h2>
+		<div ng-controller="companyController">
+			amount<input type="text" ng-model="coupon.amount"><br /> 
+			start date:     <input type="text" ng-model="coupon.startDate"><br /> 
+			end date: <input type="text" ng-model="coupon.endDate"> <br />
+			price<input type="text" ng-model="coupon.price"><br /> 
+			mwssage    <input type="text" ng-model="coupon.message"><br /> 
+			type <input type="text" ng-model="coupon.type"> <br />
+			title <input type="text" ng-model="coupon.title"><br />
+	
+					
+			<input type="button" value="add new coupon" ng-click="getnewcoup()" /><br /> 	
+		</div>
+     <a href="http://localhost:8080/coupon/#/"> Back</a>
+</div>

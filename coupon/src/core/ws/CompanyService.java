@@ -38,7 +38,7 @@ public class CompanyService {
 	@Context
 	private HttpServletResponse responce;
 
-	@POST
+	@GET
 	@Path("login/{user}/{pass}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String login(@PathParam("user") String user, @PathParam("pass") String pass) {
@@ -57,7 +57,7 @@ public class CompanyService {
 		HttpSession session = request.getSession(true);
 		session.setAttribute("facade", facade);
 		session.setAttribute("user", user);
-		return "login success";
+		return "success";
 	}
 
 	@GET
@@ -80,9 +80,10 @@ public class CompanyService {
 	}
 
 	@POST
-	@Path("createCoupon")
+	@Path("createCoupon/{coupon}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String createCoupon(String jsonCoupon)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String createCoupon(@PathParam("coupon")String jsonCoupon)
 			throws ConnectionCloseException, ClosedConnectionStatementCreationException, FailedToCreateCouponException {
 		HttpSession session = request.getSession(false);
 		if (session == null) {
@@ -94,7 +95,7 @@ public class CompanyService {
 		try {
 			coupon = mapper.readValue(jsonCoupon, Coupon.class);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			//TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		facade.createCoupon(coupon);

@@ -1,0 +1,62 @@
+<!-- Adminlogin.html -->
+<div class="container">
+    <h2>customer</h2>
+     <h2>admin manage </h2>
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">login page</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        
+        <li><a href="#/newcompany">add new company</a></li>
+        <li><a href="#/updatecompany">update company</a></li> 
+        <li><a href="#/managecompany">manage company</a></li> 
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<h1>view all customer coupons</h1>
+		<div ng-controller="customerController">
+			<input type="button" value="view all coupons" ng-click="viewAllcustomercoupons()" />
+<td>title</td>
+					<td> </td>
+					<td>id</td>
+					<td> </td>
+					<td>{{coupon.amount}}</td>
+					<td>" "</td>
+					<td>{{coupon.endDate}}</td>
+					<td>" "</td>
+					<td>{{coupon.startDate}}</td>
+					<td>" "</td>
+					<td>{{coupon.price}}</td>
+					<td>" "</td>
+					<td>{{coupon.message}}</td>
+					<td>" "</td>
+					<td>{{coupon.type}}</td>
+			<table boder="10">
+				<tr ng-repeat="coupon in custcoupons">
+					<td>{{coupon.title}}</td>
+					<td> </td>
+					<td>{{coupon.id}}</td>
+					<td> </td>
+					<td>{{coupon.amount}}</td>
+					<td> </td>
+					<td>{{coupon.endDate}}</td>
+					<td> </td>
+					<td>{{coupon.startDate}}</td>
+					<td> </td>
+					<td>{{coupon.price}}</td>
+					<td> </td>
+					<td>{{coupon.message}}</td>
+					<td> </td>
+					<td>{{coupon.type}}</td>
+					
+				</tr>
+			</table>
+		</div>
+    <a href="#/"> Back</a>
+</div>

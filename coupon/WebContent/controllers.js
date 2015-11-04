@@ -1,41 +1,99 @@
-angular.module('coupon', []);
-
+var app=angular.module('coupon',['ngRoute']);
+app.config(function($routeProvider) {
+	$routeProvider
+		.when('/', {
+			templateUrl: 'templates/home.html',
+			controller: 'loginController'
+		})
+		.when('/adminPage', {
+		templateUrl: "templates/Adminlogin.html",
+			controller: 'loginController'
+	})
+		.when('/CustomerPage', {
+		templateUrl: "templates/Customerlogin.html",
+		controller: 'loginController'
+	})
+		.when('/CompanyPage', {
+		templateUrl: "templates/Companylogin.html",
+		controller: 'loginController'
+	})
+		.when('/newcompany', {
+		templateUrl: "templates/newcompany.html",
+		controller: 'adminController'
+	})
+		.when('/updatecompany', {
+		templateUrl: "templates/updatecompany.html",
+		controller: 'adminController'
+	})
+	.when('/managecompany', {
+		templateUrl: "templates/deleteshowcomp.html",
+		controller: 'adminController'
+	})
+	.when('/custcoupons', {
+		templateUrl: "templates/custcoupons.html",
+		controller: 'customerController'
+	})
+	.when('/custcouponsprice', {
+		templateUrl: "templates/custcouponsprice.html",
+		controller: 'customerController'
+	})
+	.when('/custcouponstype', {
+		templateUrl: "templates/custcouponstype.html",
+		controller: 'customerController'
+	})
+	.when('/purchasecoupons', {
+		templateUrl: "templates/purchasecoupons.html",
+		controller: 'customerController'
+	})
+	.when('/newcoupon', {
+		templateUrl: "templates/newcoupon.html",
+		controller: 'companyController'
+	})
+		.otherwise({
+			redirectTo: '/'
+		});
+});
 // login controller for admin, company and customer//
-angular.module('coupon').controller(
+app.controller(
 		'loginController',
-		function($scope, $http) {
+		function($scope, $http,$location,$rootScope) {
 			// on load
 			$scope.loginResult = "no body";
-
+var log=$scope.type;	
 			// admin login
 			$scope.login = function() {
 				$http.post(
-						"rest/admin/login/" + $scope.user + "/" + $scope.pass)
+						"rest/"+$scope.type+"/login/" + $scope.user + "/" + $scope.pass)
 						.success(function(response) {
-							$scope.loginResult = response;
+							if (response == "success"){
+								$rootScope.username = $scope.user;
+								switch ($scope.type) 
+								{
+								case "customer":
+									$location.path("/CustomerPage");
+									break; 				
+								case "company":
+									$location.path("/CompanyPage");
+									break;
+								case "admin":
+									$location.path("/adminPage");
+									break;
+								default:
+									$location.path("/");
+									break;
+								}			
+							}
+							else {
+								$scope.loginlog = response;
+							}
 						});
 			};
-			// admin customer
-			$scope.logincust = function() {
-				$http.post(
-						"rest/customer/login/" + $scope.user + "/" + $scope.pass)
-						.success(function(response) {
-							$scope.loginResult = response;
-						});
-			};
-			// admin company
-			$scope.logincomp = function() {
-				$http.post(
-						"rest/company/login/" + $scope.user + "/" + $scope.pass)
-						.success(function(response) {
-							$scope.loginResult = response;
-						});
-			};
+			
 		});
 
-angular.module('coupon').controller(
+app.controller(
 		'adminController',
-		function($scope, $http, $location) {
+		function($scope, $http,$location,$rootScope) {
 		///////company/////////
 			// get all companies
 			$scope.viewAll = function() {
@@ -58,11 +116,12 @@ angular.module('coupon').controller(
 								+ $scope.mail + "/" + $scope.pass).success(
 						function(response) {
 							$scope.newcompany = response;
+							
 						});
 			};
 			// DeleteCompany
 			$scope.erase = function() {
-				$http.post("rest/admin/DeleteCompany/" + $scope.id).success(
+				$http.delete("rest/admin/DeleteCompany/" + $scope.id).success(
 						function(response) {
 							$scope.deletecompany = response;
 						});
@@ -78,13 +137,13 @@ angular.module('coupon').controller(
 			};
 ///////customer/////////
 			// get all customers
-			$scope.viewAll = function() {
+			$scope.viewAllcust = function() {
 				$http.get("rest/admin/getAllCustomers").success(
 						function(response) {
-							$scope.companies = response;
+							$scope.customers = response;
 						});
 			};
-			// get company
+			// get customer
 			$scope.viewcustomer = function() {
 				$http.get("rest/admin/GetCustomer" + $scope.id).success(
 						function(response) {
@@ -119,9 +178,9 @@ angular.module('coupon').controller(
 		});
 
 /////////company service////////
-angular.module('coupon').controller(
+app.controller(
 		'companyController',
-		function($scope, $http, $location) {
+		function($scope, $http,$location,$rootScope) {
 		///////company/////////
 			// get all coupons
 			$scope.viewAllcoupons = function() {
@@ -140,7 +199,7 @@ angular.module('coupon').controller(
 			};
 			// DeleteCoupon
 			$scope.erasecoupon = function() {
-				$http.post("rest/company/DeleteCustomer/" + $scope.coupon).success(
+				$http.post("rest/company/DeleteCoupon/" + $scope.coupon).success(
 						function(response) {
 							$scope.deletecoupon= response;
 						});
@@ -155,9 +214,9 @@ angular.module('coupon').controller(
 			};
 		});
 /////////customer service////////
-angular.module('coupon').controller(
+app.controller(
 		'customerController',
-		function($scope, $http, $location) {
+		function($scope, $http,$location,$rootScope) {
 		///////company/////////
 			// get all coupons
 			$scope.viewAllcustomercoupons = function() {

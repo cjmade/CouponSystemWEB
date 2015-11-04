@@ -53,7 +53,7 @@ public class CustomerService {
 		session.setAttribute("facade", facade);
 		session.setAttribute("user", user);
 		session.setAttribute("pass", pass);
-		return "true";
+		return "success";
 	}
 
 	@GET

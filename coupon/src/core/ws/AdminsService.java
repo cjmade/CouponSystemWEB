@@ -20,9 +20,10 @@ import javax.ws.rs.core.MediaType;
 
 
 import facades.AdminFacade;
-
+import facades.CompanyFacade;
 import objects.ClientType;
 import objects.Company;
+import objects.Coupon;
 import objects.Customer;
 import system.CouponSystem;
 
@@ -43,7 +44,7 @@ public class AdminsService {
 		AdminFacade facade=null;
 		try {
 			CouponSystem sys = CouponSystem.getInstance();
-			facade = (AdminFacade) sys.login("admin", "1234", ClientType.admin);
+			facade = (AdminFacade) sys.login(user, pass, ClientType.admin);
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -51,24 +52,25 @@ public class AdminsService {
 		session.setAttribute("facade", facade);
 		session.setAttribute("user", user);
 		session.setAttribute("pass", pass);
-		return "hello admin";
+		return "success";
 	}
 
 	@GET
 	@Path("getAllCompanies")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Company> getAllCompanies() throws SQLException {
-
+		Collection<Company> companies;
 		HttpSession session = request.getSession(false);
-
-		try {
-			AdminFacade facade = (AdminFacade) session.getAttribute("facade");
-			return facade.getAllCompanies();
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (session == null) {
 			return null;
 		}
+		AdminFacade facade = (AdminFacade) session.getAttribute("facade");
+		try {
+			companies = facade.getAllCompanies();
+		} catch (Exception e) {
+			return null;
+		}
+		return companies;
 
 	}
 
@@ -155,17 +157,18 @@ public class AdminsService {
 	@Path("getAllCustomers")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Customer> getAllCustomers() throws SQLException {
-
+		Collection<Customer> customers;
 		HttpSession session = request.getSession(false);
-		try {
-			AdminFacade facade = (AdminFacade) session.getAttribute("facade");
-			return facade.getAllCustomers();
-
-		} catch (Exception e) {
-
+		if (session == null) {
 			return null;
 		}
-
+		AdminFacade facade = (AdminFacade) session.getAttribute("facade");
+		try {
+			customers = facade.getAllCustomers();
+		} catch (Exception e) {
+			return null;
+		}
+		return customers;
 	}
 
 	@POST

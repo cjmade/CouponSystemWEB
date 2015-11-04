@@ -1,72 +1,49 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/angular.ngtable/0.3.1/ng-table.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 <script src="controllers.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-route.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <meta http-equiv="Content-Type"
 	content="text/html; charset=windows-1255">
 <title>coupons</title>
 </head>
-<body style="background-color:lightgrey">
+<body style="background-color: lightgrey">
 	<!-- MAIN DIV -->
 	<div ng-app="coupon">
+		<ng-view></ng-view>
 
-
-
-
-	<h1/>login</h1>
+		<h1 />
+		login
+		</h1>
 		<div ng-controller="loginController">
-			userName<input type="text" ng-model="user"><br /> 
-			password <input type="text" ng-model="pass"> <input type="button"
-				value="login" ng-click="login()" /><br /> 
-				{{loginResult}}
-		</div>
-<h1>add new company</h1>
-		<div ng-controller="adminController">
-			userName<input type="text" ng-model="user"><br /> 
-			mail    ////// <input type="text" ng-model="mail"><br /> 
-			password <input type="text" ng-model="pass"> 
-			<input type="button" value="add new company" ng-click="getnew()" /><br /> 
-			
-			
-		</div>
-		<h1>update company</h1>
-		<div ng-controller="adminController">
-			id<input type="text" ng-model="id"><br /> 
-			mail    ////// <input type="text" ng-model="mail"><br /> 
-			password <input type="text" ng-model="pass"> 
-			<input type="button" value="update company" ng-click="update()" /><br /> 
-			
-			
-		</div>
-		<h1>display company</h1>
-		<div ng-controller="loginController">
-			id<input type="text" ng-model="id"><br /> 
-			 <input type="button" value="display company" ng-click="viewcompany()" /><br /> 
-				{{loginResult}}
-		</div>
-		<h1>delete company</h1>
-		<div ng-controller="adminController">
-			company id to delete<input type="text" ng-model="id"><br /> 
-			<input type="button" value="delete company" ng-click="erase()" /><br /> 
-		</div>
-		<!-- END OF GREET DIV -->
-<h1>view all companies</h1>
-		<div ng-controller="adminController">
-		<input type="button" value="view all companies" ng-click="viewAll()" />
-			
-			<table boder="10">
-				<tr ng-repeat="company in companies">
-					<td>{{company.id}}</td>
-					<td>{{company.compName}}</td>
-					<td>{{company.password}}</td>
-					<td>{{company.email}}</td>
-					<td>{{company.coupons}}</td>
+			<table>
+
+				<tr>
+					<td align="right">choose type :</td>
+					<td><select ng-model="type" value="admin">
+							<option value="admin">admin</option>
+							<option value="company">company</option>
+							<option value="customer">customer</option>
+					</select></td>
 				</tr>
 			</table>
-		</div>
-	</div>
+			userName<input type="text" value="name" ng-model="user"><br />
+			password <input type="text" value="password" ng-model="pass">
+			<input type="button" value="login" ng-click="login()" /><br />
 
+		</div>
+
+
+		
 </body>
 </html>

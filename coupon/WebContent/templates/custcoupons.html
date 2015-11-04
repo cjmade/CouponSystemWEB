@@ -1,0 +1,44 @@
+<!-- Adminlogin.html -->
+<div class="container">
+  
+<h1>view all customer coupons</h1>
+		<div ng-controller="customerController">
+			<input type="button" value="view all coupons" ng-click="viewAllcustomercoupons()" />
+<td>title</td>
+					<td> </td>
+					<td>id</td>
+					<td> </td>
+					<td>{{coupon.amount}}</td>
+					<td>" "</td>
+					<td>{{coupon.endDate}}</td>
+					<td>" "</td>
+					<td>{{coupon.startDate}}</td>
+					<td>" "</td>
+					<td>{{coupon.price}}</td>
+					<td>" "</td>
+					<td>{{coupon.message}}</td>
+					<td>" "</td>
+					<td>{{coupon.type}}</td>
+			<table boder="10">
+				<tr ng-repeat="coupon in custcoupons">
+					<td>{{coupon.title}}</td>
+					<td> </td>
+					<td>{{coupon.id}}</td>
+					<td> </td>
+					<td>{{coupon.amount}}</td>
+					<td> </td>
+					<td>{{coupon.endDate}}</td>
+					<td> </td>
+					<td>{{coupon.startDate}}</td>
+					<td> </td>
+					<td>{{coupon.price}}</td>
+					<td> </td>
+					<td>{{coupon.message}}</td>
+					<td> </td>
+					<td>{{coupon.type}}</td>
+					
+				</tr>
+			</table>
+		</div>
+    <a href="#/"> Back</a>
+</div>

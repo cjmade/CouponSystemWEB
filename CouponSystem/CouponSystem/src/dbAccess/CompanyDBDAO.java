@@ -245,7 +245,7 @@ public class CompanyDBDAO implements CompanyDAO {
 				company.setPassword(rs.getString("PASSWORD"));
 				company.setEmail(rs.getString("EMAIL"));
 				companies.add(company);
-				System.out.println(company.toString());
+				//stem.out.println(company.toString());
 			}
 		} catch (SQLException e) {
 			throw new ClosedConnectionStatementCreationException();

@@ -28,12 +28,12 @@ public class test {
 		
 			
        //////////////////////
-       URI baseUri = UriBuilder.fromUri("http://localhost:8080/coupon/rest/customer").build();
+       URI baseUri = UriBuilder.fromUri("http://localhost:8080/coupon/rest/admin").build();
         WebResource service = client.resource(baseUri);
         
         
        //System.out.println(service.path("DeleteCompany").path("14").accept(MediaType.APPLICATION_JSON).delete(String.class));
-        //System.out.println(service.path("getAllCompanies").accept(MediaType.APPLICATION_JSON).get(String.class));
+        System.out.println(service.path("getAllCompanies").accept(MediaType.APPLICATION_JSON).get(String.class));
         //System.out.println(service.path("AddCompany").path("shayfasss").path("shay@gmail.com").path("1987").accept(MediaType.APPLICATION_JSON).get(String.class));
          //System.out.println(service.path("GetCompany").path("2").accept(MediaType.APPLICATION_JSON).get(String.class));
         //System.out.println(service.path("UpdateCompany").path("11").path("shayfassshay").path("shayshay").accept(MediaType.TEXT_PLAIN).put(String.class));

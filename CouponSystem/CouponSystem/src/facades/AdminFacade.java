@@ -10,6 +10,7 @@ import exceptions.*;
 
 public class AdminFacade implements ClientFacade
 {
+	
 	// Create Data Base connections:
 	// CompanyDBDAO to manipulate companies
 	private CompanyDBDAO compDBDAO;
@@ -35,13 +36,13 @@ public class AdminFacade implements ClientFacade
 	public ClientFacade login(String name, String password) throws DatabaseAccessError
 	{
 		// If username/password wrong - throw exception
-		if(name != "admin" || password != "1234")
+		if(name.equals("admin")  & password.equals("1234"))
 		{
-			System.out.println("Wrong user/passowrd combination, try again");
-			return null;
+			return this;
 		}
+		System.out.println("Wrong user/passowrd combination, try again");
 		// else - create and return new Facade Object
-		return this;
+		return null;
 	}
 	// Create new company
 	public void createCompany(Company newCompany)
@@ -87,9 +88,9 @@ public class AdminFacade implements ClientFacade
 	// Returns Collection<Company> of all existing companies
 	public Collection<Company> getAllCompanies()
 	{
-		ArrayList<Company> allCompanies = null;
+		Collection<Company> allCompanies = null;
 		try	{
-			allCompanies = (ArrayList<Company>)compDBDAO.getAllCompanies();
+			allCompanies = compDBDAO.getAllCompanies();
 		}catch(WaitingForConnectionInterrupted 
 				| ClosedConnectionStatementCreationException | ConnectionCloseException e)	{
 			System.out.print(e.getMessage() + ", failed to get companies collection");
