@@ -33,7 +33,7 @@ public class AdminsService {
 	@Context
 	private HttpServletRequest request;
 
-	@POST
+@POST
 	@Path("login/{user}/{pass}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String login(@PathParam("user") String user, @PathParam("pass") String pass) {
@@ -42,9 +42,13 @@ public class AdminsService {
 		}
 
 		AdminFacade facade=null;
+		String str=null;
 		try {
 			CouponSystem sys = CouponSystem.getInstance();
 			facade = (AdminFacade) sys.login(user, pass, ClientType.admin);
+			if(facade!=null){
+				str="success";
+			}
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -52,7 +56,18 @@ public class AdminsService {
 		session.setAttribute("facade", facade);
 		session.setAttribute("user", user);
 		session.setAttribute("pass", pass);
-		return "success";
+		return str;
+	}
+	@POST
+	@Path("logout")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String login() {
+		
+			request.getSession(true).invalidate();
+		
+		return "logout ";
+
+		
 	}
 
 	@GET
@@ -67,6 +82,7 @@ public class AdminsService {
 		AdminFacade facade = (AdminFacade) session.getAttribute("facade");
 		try {
 			companies = facade.getAllCompanies();
+			
 		} catch (Exception e) {
 			return null;
 		}

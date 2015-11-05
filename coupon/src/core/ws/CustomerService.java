@@ -41,11 +41,14 @@ public class CustomerService {
 		if (request.getSession(false) != null) {
 			request.getSession(false).invalidate();
 		}
-
+String str=null;
 		CustomerFacade facade;
 		try {
 			CouponSystem sys = CouponSystem.getInstance();
 			facade = (CustomerFacade) sys.login(user, pass, ClientType.customer);
+			if(facade!=null){
+				str="success";
+			}
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -75,7 +78,7 @@ public class CustomerService {
 		return coupons;
 	}
 
-	@GET
+	@POST
 	@Path("ByPrice/{price}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Coupon> getAllPurchasedCouponsByPrice(@PathParam("price") double price) {
@@ -94,7 +97,7 @@ public class CustomerService {
 		return coupons;
 	}
 
-	@GET
+	@POST
 	@Path("ByType/{type}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Coupon> getAllPurchasedCouponsByType(@PathParam("type") CouponType type) {

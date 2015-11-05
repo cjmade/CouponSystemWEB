@@ -2,19 +2,22 @@
 <div class="container">
     <h2>admin manage </h2>
   <nav class="navbar navbar-default">
-  <div class="container-fluid">
+  <div class="container-fluid" ng-controller="companyController">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">login page</a>
     </div>
-    <div>
-      <ul class="nav navbar-nav">
-        
-        <li><a href="#/newcompany">add new company</a></li>
-        <li><a href="#/updatecompany">update company</a></li> 
-        <li><a href="#/managecompany">manage company</a></li> 
-        
-      </ul>
-    </div>
-  </div>
+			<div>
+				<ul class="nav navbar-nav">
+
+					<li><a href="#/newcompany">add new company</a></li>
+					<li><a href="#/updatecompany">update company</a></li>
+					<li><a href="#/managecompany">manage company</a></li>
+					 <li><a href="#/customer">customer</a></li> 
+					<li><a href="#/" ng-click="logout()">logout
+							</a></li>
+					
+				</ul>
+			</div>
+		</div>
 </nav>
 </div>

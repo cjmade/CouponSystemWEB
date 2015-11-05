@@ -17,7 +17,7 @@
 	content="text/html; charset=windows-1255">
 <title>coupons</title>
 </head>
-<body style="background-color: lightgrey">
+<body style="background-color: lightblue">
 	<!-- MAIN DIV -->
 	<div ng-app="coupon">
 		<ng-view></ng-view>
@@ -25,7 +25,7 @@
 		<h1 />
 		login
 		</h1>
-		<div ng-controller="loginController">
+		<div ng-controller="loginController" >
 			<table>
 
 				<tr>
@@ -37,8 +37,8 @@
 					</select></td>
 				</tr>
 			</table>
-			userName<input type="text" value="name" ng-model="user"><br />
-			password <input type="text" value="password" ng-model="pass">
+			userName<input type="text"  ng-model="user"><br />
+			password <input type="password"  ng-model="pass">
 			<input type="button" value="login" ng-click="login()" /><br />
 
 		</div>

@@ -1,17 +1,22 @@
-<!-- Adminlogin.html -->
+
 <div class="container">
+
     <h2>please insert the coupon details </h2>
-		<div ng-controller="companyController">
-			amount<input type="text" ng-model="coupon.amount"><br /> 
-			start date:     <input type="text" ng-model="coupon.startDate"><br /> 
-			end date: <input type="text" ng-model="coupon.endDate"> <br />
-			price<input type="text" ng-model="coupon.price"><br /> 
-			mwssage    <input type="text" ng-model="coupon.message"><br /> 
-			type <input type="text" ng-model="coupon.type"> <br />
-			title <input type="text" ng-model="coupon.title"><br />
+    <div  ng-controller="companyController">
+      amount<input type="text" ng-model="amount"><br /> 
+			start date:     <input type="text"  ng-model="startdate"><br /> 
+			end date: <input type="text" ng-model="enddate"> <br />
+			price<input type="text" ng-model="price"><br /> 
+			message    <input type="text" ng-model="message"><br /> 
+			type <input type="text" ng-model="type"> <br />
+			title <input type="text" ng-model="title"><br />
+      <input type="button" value="add new coupon" ng-click="getnewcoup()" /><br /> 
+        <hr/>  
+        {{$scope.newcoup}}
+     
+			
 	
-					
-			<input type="button" value="add new coupon" ng-click="getnewcoup()" /><br /> 	
+				
 		</div>
-     <a href="http://localhost:8080/coupon/#/"> Back</a>
+     <a href="#/CompanyPage"> Back</a>
 </div>

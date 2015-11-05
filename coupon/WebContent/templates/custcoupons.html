@@ -4,41 +4,34 @@
 <h1>view all customer coupons</h1>
 		<div ng-controller="customerController">
 			<input type="button" value="view all coupons" ng-click="viewAllcustomercoupons()" />
-<td>title</td>
-					<td> </td>
-					<td>id</td>
-					<td> </td>
-					<td>{{coupon.amount}}</td>
-					<td>" "</td>
-					<td>{{coupon.endDate}}</td>
-					<td>" "</td>
-					<td>{{coupon.startDate}}</td>
-					<td>" "</td>
-					<td>{{coupon.price}}</td>
-					<td>" "</td>
-					<td>{{coupon.message}}</td>
-					<td>" "</td>
-					<td>{{coupon.type}}</td>
-			<table boder="10">
-				<tr ng-repeat="coupon in custcoupons">
+
+			<table boder="10" st-table="rowCollection" class="table table-striped">
+				<thead>
+				<tr>
+				<th>title</th>
+					<th>id</th>
+					<th>amount</th>
+					<th>endDate</th>
+					<th>startDate</th>
+					<th>price</th>
+					<th>message</th>
+					<th>type</th>
+					</tr>
+					</thead>
+					<tbody>
+				<tr ng-repeat="coupon in custcoupons.coupon">
 					<td>{{coupon.title}}</td>
-					<td> </td>
 					<td>{{coupon.id}}</td>
-					<td> </td>
 					<td>{{coupon.amount}}</td>
-					<td> </td>
 					<td>{{coupon.endDate}}</td>
-					<td> </td>
 					<td>{{coupon.startDate}}</td>
-					<td> </td>
 					<td>{{coupon.price}}</td>
-					<td> </td>
 					<td>{{coupon.message}}</td>
-					<td> </td>
 					<td>{{coupon.type}}</td>
 					
 				</tr>
+				</tbody>
 			</table>
 		</div>
-    <a href="#/"> Back</a>
+    <a href="#/CustomerPage"> Back</a>
 </div>

@@ -1,62 +1,68 @@
 <!-- Adminlogin.html -->
 <div class="container">
-    <h2>customer</h2>
-     <h2>admin manage </h2>
-  <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">login page</a>
-    </div>
-    <div>
-      <ul class="nav navbar-nav">
-        
-        <li><a href="#/newcompany">add new company</a></li>
-        <li><a href="#/updatecompany">update company</a></li> 
-        <li><a href="#/managecompany">manage company</a></li> 
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-  
-<h1>view all customer coupons</h1>
+<h1>view all customer coupons by price</h1>
 		<div ng-controller="customerController">
-			<input type="button" value="view all coupons" ng-click="viewAllcustomercoupons()" />
-<td>title</td>
-					<td> </td>
-					<td>id</td>
-					<td> </td>
-					<td>{{coupon.amount}}</td>
-					<td>" "</td>
-					<td>{{coupon.endDate}}</td>
-					<td>" "</td>
-					<td>{{coupon.startDate}}</td>
-					<td>" "</td>
-					<td>{{coupon.price}}</td>
-					<td>" "</td>
-					<td>{{coupon.message}}</td>
-					<td>" "</td>
-					<td>{{coupon.type}}</td>
-			<table boder="10">
-				<tr ng-repeat="coupon in custcoupons">
+		price<input type="text"  ng-model="price"><br />
+			<input type="button" value="view all coupons by price" ng-click="getcoupbyprice()" />
+<table boder="10" st-table="rowCollection" class="table table-striped">
+				<thead>
+				<tr>
+				<th>title</th>
+					<th>id</th>
+					<th>amount</th>
+					<th>endDate</th>
+					<th>startDate</th>
+					<th>price</th>
+					<th>message</th>
+					<th>type</th>
+					</tr>
+					</thead>
+					<tbody>
+				<tr ng-repeat="coupon in getcoup.coupon">
 					<td>{{coupon.title}}</td>
-					<td> </td>
 					<td>{{coupon.id}}</td>
-					<td> </td>
 					<td>{{coupon.amount}}</td>
-					<td> </td>
 					<td>{{coupon.endDate}}</td>
-					<td> </td>
 					<td>{{coupon.startDate}}</td>
-					<td> </td>
 					<td>{{coupon.price}}</td>
-					<td> </td>
 					<td>{{coupon.message}}</td>
-					<td> </td>
 					<td>{{coupon.type}}</td>
 					
 				</tr>
+				</tbody>
 			</table>
 		</div>
-    <a href="#/"> Back</a>
+		<h1>view all customer coupons by type</h1>
+		<div ng-controller="customerController">
+		type<input type="text"  ng-model="type"><br />
+			<input type="button" value="view all coupons by type" ng-click="getcoupbyTYPE()" />
+<table boder="10" st-table="rowCollection" class="table table-striped">
+				<thead>
+				<tr>
+				<th>title</th>
+					<th>id</th>
+					<th>amount</th>
+					<th>endDate</th>
+					<th>startDate</th>
+					<th>price</th>
+					<th>message</th>
+					<th>type</th>
+					</tr>
+					</thead>
+					<tbody>
+				<tr ng-repeat="coupon in getcoupTYPE.coupon">
+					<td>{{coupon.title}}</td>
+					<td>{{coupon.id}}</td>
+					<td>{{coupon.amount}}</td>
+					<td>{{coupon.endDate}}</td>
+					<td>{{coupon.startDate}}</td>
+					<td>{{coupon.price}}</td>
+					<td>{{coupon.message}}</td>
+					<td>{{coupon.type}}</td>
+					
+				</tr>
+				</tbody>
+			</table>
+		</div>
+    <a href="#/CustomerPage"> Back</a>
 </div>

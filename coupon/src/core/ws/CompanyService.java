@@ -1,6 +1,7 @@
 package core.ws;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,7 @@ public class CompanyService {
 	@Context
 	private HttpServletResponse responce;
 
-	@GET
+	@POST
 	@Path("login/{user}/{pass}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String login(@PathParam("user") String user, @PathParam("pass") String pass) {
@@ -46,11 +47,14 @@ public class CompanyService {
 		if (request.getSession(false) != null) {
 			request.getSession(false).invalidate();
 		}
-
+String str=null;
 		CompanyFacade facade;
 		try {
 			CouponSystem sys = CouponSystem.getInstance();
 			facade = (CompanyFacade) sys.login(user, pass, ClientType.company);
+			if(facade!=null){
+				str="success";
+			}
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -80,27 +84,38 @@ public class CompanyService {
 	}
 
 	@POST
-	@Path("createCoupon/{coupon}")
+	@Path("createCoupon/{amount}/{startdate}/{enddate}/{message}/{title}/{type}/{price}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String createCoupon(@PathParam("coupon")String jsonCoupon)
-			throws ConnectionCloseException, ClosedConnectionStatementCreationException, FailedToCreateCouponException {
+	public String createCoupon(@PathParam("amount") int amount, @PathParam("startdate") String startdate,
+			@PathParam("enddate") String enddate, @PathParam("message") String message,
+			@PathParam("title") String title, @PathParam("type") CouponType type, @PathParam("price") double price)
+					throws ConnectionCloseException, ClosedConnectionStatementCreationException,
+					FailedToCreateCouponException {
 		HttpSession session = request.getSession(false);
 		if (session == null) {
 			return null;
 		}
 		CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
-		Coupon coupon = null;
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			coupon = mapper.readValue(jsonCoupon, Coupon.class);
-		} catch (IOException e) {
-			//TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Coupon coupon = new Coupon();
+		coupon.setAmount(amount);
+		coupon.setEndDate(java.sql.Date.valueOf(enddate));
+		coupon.setMessage(message);
+		coupon.setStartDate(java.sql.Date.valueOf(startdate));
+		coupon.setPrice(price);
+		coupon.setType(type);
+		coupon.setTitle(title);
+		// ObjectMapper mapper = new ObjectMapper();
+		// try {
+		// coupon = mapper.readValue(jsonCoupon, Coupon.class);
+		// } catch (IOException e) {
+		// TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 		facade.createCoupon(coupon);
 		return "created";
 	}
+
 	@PUT
 	@Path("updateCoupon/{coupon}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -114,7 +129,6 @@ public class CompanyService {
 
 		}
 
-		
 		try {
 			CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 			Coupon coupon = null;
@@ -126,6 +140,7 @@ public class CompanyService {
 		}
 		return "Coupon was updated successfuly.";
 	}
+
 	@DELETE
 	@Path("removeCoupon/{coupon}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -139,7 +154,6 @@ public class CompanyService {
 
 		}
 
-		
 		try {
 			CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 			Coupon coupon = null;
@@ -151,6 +165,7 @@ public class CompanyService {
 		}
 		return "Coupon was removed successfuly.";
 	}
+
 	@GET
 	@Path("ByType/{type}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
@@ -170,6 +185,7 @@ public class CompanyService {
 		}
 		return coupons;
 	}
+
 	@GET
 	@Path("ById/{id}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
@@ -189,6 +205,7 @@ public class CompanyService {
 		}
 		return coupon;
 	}
+
 	@GET
 	@Path("Bydate/{date}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)

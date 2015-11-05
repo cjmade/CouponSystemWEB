@@ -49,6 +49,10 @@ app.config(function($routeProvider) {
 		templateUrl: "templates/newcoupon.html",
 		controller: 'companyController'
 	})
+	.when('/customer', {
+		templateUrl: "templates/customer.html",
+		controller: 'companyController'
+	})
 		.otherwise({
 			redirectTo: '/'
 		});
@@ -94,7 +98,7 @@ var log=$scope.type;
 app.controller(
 		'adminController',
 		function($scope, $http,$location,$rootScope) {
-		///////company/////////
+		// /////company/////////
 			// get all companies
 			$scope.viewAll = function() {
 				$http.get("rest/admin/getAllCompanies").success(
@@ -135,7 +139,7 @@ app.controller(
 							$scope.updatecompany = response;
 						});
 			};
-///////customer/////////
+// /////customer/////////
 			// get all customers
 			$scope.viewAllcust = function() {
 				$http.get("rest/admin/getAllCustomers").success(
@@ -161,7 +165,7 @@ app.controller(
 			};
 			// DeleteCustomer
 			$scope.erasecustomer = function() {
-				$http.post("rest/admin/DeleteCustomer/" + $scope.id).success(
+				$http.delete("rest/admin/DeleteCustomer/" + $scope.id).success(
 						function(response) {
 							$scope.deletecustomer= response;
 						});
@@ -175,31 +179,42 @@ app.controller(
 							$scope.updatecustomer = response;
 						});
 			};
+			$scope.logout=function($location) {
+				$http.put(
+						"rest/admin/logout" ).success(
+						function(response) {
+							$scope.out = response;
+						});
+			};
 		});
 
-/////////company service////////
+// ///////company service////////
 app.controller(
 		'companyController',
 		function($scope, $http,$location,$rootScope) {
-		///////company/////////
+		// /////company/////////
 			// get all coupons
 			$scope.viewAllcoupons = function() {
 				$http.get("rest/company/getAllCoupons").success(
-						function(response) {
-							$scope.coupons = response;
+						function(data) {
+							$scope.$apply(); // used $scope.$apply() to update the scope.
+			                
+							$scope.coupons = data;
+							$scope.$apply();
+							console.log($scope.coupons);
 						});
 			};
 			// new coupon
 			$scope.getnewcoup = function() {
 				$http.post(
-						"rest/company/createCoupon/" + $scope.coupon).success(
+						"rest/company/createCoupon/" + $scope.amount+ "/" + $scope.startdate+ "/" + $scope.enddate+ "/" + $scope.message+ "/" + $scope.title+ "/" + $scope.type+ "/" + $scope.price).success(
 						function(response) {
 							$scope.newcoup= response;
 						});
 			};
 			// DeleteCoupon
 			$scope.erasecoupon = function() {
-				$http.post("rest/company/DeleteCoupon/" + $scope.coupon).success(
+				$http.delete("rest/company/DeleteCoupon/" + $scope.coupon).success(
 						function(response) {
 							$scope.deletecoupon= response;
 						});
@@ -213,16 +228,17 @@ app.controller(
 						});
 			};
 		});
-/////////customer service////////
+// ///////customer service////////
 app.controller(
 		'customerController',
 		function($scope, $http,$location,$rootScope) {
-		///////company/////////
+		// /////company/////////
 			// get all coupons
 			$scope.viewAllcustomercoupons = function() {
 				$http.get("rest/customer/getAllCoupons").success(
 						function(response) {
 							$scope.custcoupons = response;
+							
 						});
 			};
 			// get coupon by price
