@@ -130,19 +130,15 @@ public class CouponDBDAO implements CouponDAO {
 		try	{
 			// Prepare SQL message to remove the Coupon
 			String updateSQL = "UPDATE APP.COUPON SET "
-					+ "AMOUNT=?,MESSAGE=?,PRICE=?,TITLE=?,END_DATE=?,START_DATE=?,IMAGE=?,COUPON_TYPE=? "
+					+ "AMOUNT=?,MESSAGE=?,PRICE=?,END_DATE=? "
 					+ "WHERE ID=?";
 			// Prepare statement
 			preparedStatement = connection.prepareStatement(updateSQL);
 			preparedStatement.setInt(1, coupon.getAmount());
 			preparedStatement.setString(2, coupon.getMessage());
 			preparedStatement.setDouble(3, coupon.getPrice());
-			preparedStatement.setString(4, coupon.getTitle());
-			preparedStatement.setDate(5, (java.sql.Date) coupon.getEndDate());
-			preparedStatement.setDate(6, (java.sql.Date) coupon.getStartDate());
-			preparedStatement.setString(7, coupon.getImage());
-			preparedStatement.setString(8, coupon.getType().name());
-			preparedStatement.setLong(9, coupon.getId());
+			preparedStatement.setDate(4, (java.sql.Date) coupon.getEndDate());
+			preparedStatement.setLong(5, coupon.getId());
 			// update the Coupon
 			preparedStatement.execute();
 			// Log
@@ -172,16 +168,19 @@ public class CouponDBDAO implements CouponDAO {
 			throw new WaitingForConnectionInterrupted();
 		}
 		// Prepare and execute coupon
-		Statement statement;
+		PreparedStatement statement;
 		ResultSet rs;
 		String sql;
-		Coupon coupon = null;;
+		Coupon coupon = null;
 		try	{
-			statement = connection.createStatement();
+			
 			// Prepare SQL message to get the Coupon by the id
-			sql = "SELECT * FROM APP.COUPON WHERE ID='"+id + "'";
+			sql = "SELECT * FROM APP.COUPON WHERE ID=?";
+			statement = connection.prepareStatement(sql);
+			
+			statement.setLong(1, id);
 			// getting the values into a result set
-			rs = statement.executeQuery(sql);
+			rs = statement.executeQuery();
 			coupon = new Coupon();
 			if(rs.next())
 			{
@@ -292,8 +291,7 @@ public class CouponDBDAO implements CouponDAO {
 				coupon.setTitle(rs.getString("TITLE"));
 				coupon.setStartDate(rs.getDate("START_DATE"));
 				coupons.add(coupon);
-				//System.out.println(coupon.toString());
-				coupons.add(coupon);
+				
 			}
 		}catch(SQLException e)	{
 			throw new ClosedConnectionStatementCreationException();

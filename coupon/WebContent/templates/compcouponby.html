@@ -1,0 +1,103 @@
+<!-- Adminlogin.html -->
+<div class="container">
+	<div id="header">
+		<h1>view all company coupons BY:</h1>
+	</div>
+	
+
+	<div ng-controller="companyController" id="nav">
+
+		<h1>TYPE</h1>
+		<select ng-model="type" ng-change="bytype()">
+		<option ng-repeat="x in types">{{x.value}}</option>
+	</select>type
+		<table boder="10" st-table="rowCollection" class="table table-striped">
+			<thead>
+				<tr>
+					<th>title</th>
+					<th>id</th>
+					<th>amount</th>
+					<th>endDate</th>
+					<th>startDate</th>
+					<th>price</th>
+					<th>message</th>
+					<th>type</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="coupon in getbytype.coupon">
+					<td>{{coupon.title}}</td>
+					<td>{{coupon.id}}</td>
+					<td>{{coupon.amount}}</td>
+					<td>{{coupon.endDate}}</td>
+					<td>{{coupon.startDate}}</td>
+					<td>{{coupon.price}}</td>
+					<td>{{coupon.message}}</td>
+					<td>{{coupon.type}}</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<div ng-controller="companyController" id="nav">
+
+		<h1></h1>
+		<div class="col-xs-2">
+  <label for="ex1">date</label>
+  <input class="form-control" id="ex1" type="text" ng-model="day">/
+  <input class="form-control" id="ex1" type="text" ng-model="month">/
+  <input class="form-control" id="ex1" type="text" ng-model="year">
+</div>
+		date<input type="text" ng-model="day" size="1">/ 
+		<input type="text" ng-model="month"size="1">/
+		<input type="text" ng-model="year"size="1">
+		<input type="button" class="btn btn-primary"  value="view all coupons by date"
+			ng-click="bydate()" />
+		<table boder="10" st-table="rowCollection" class="table table-striped">
+			<thead>
+				<tr>
+					<th>title</th>
+					<th>id</th>
+					<th>amount</th>
+					<th>endDate</th>
+					<th>startDate</th>
+					<th>price</th>
+					<th>message</th>
+					<th>type</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="coupon in getbydate.coupon">
+					<td>{{coupon.title}}</td>
+					<td>{{coupon.id}}</td>
+					<td>{{coupon.amount}}</td>
+					<td>{{coupon.endDate}}</td>
+					<td>{{coupon.startDate}}</td>
+					<td>{{coupon.price}}</td>
+					<td>{{coupon.message}}</td>
+					<td>{{coupon.type}}</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<a href="#/CompanyPage" class="btn btn-primary"> Back to company</a>
+	<style>
+#header {
+	background-color: black;
+	color: white;
+	text-align: center;
+	padding: 5px;
+}
+
+#footer {
+	background-color: black;
+	color: white;
+	clear: both;
+	text-align: center;
+	padding: 10px;
+}
+</style>
+</div>

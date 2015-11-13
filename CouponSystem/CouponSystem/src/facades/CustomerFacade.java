@@ -54,17 +54,28 @@ public class CustomerFacade implements ClientFacade {
 	}
 
 	// Purchase coupon
-	public void purchaseCoupon(Coupon coupon) {
+	public void purchaseCoupon(long id) {
 		try {
 			// Ensure coupon has an ID
-			coupon = coupDBDAO.getCoupon(coupon.getTitle());
+			Coupon coupon = coupDBDAO.getCoupon(id);
 			// Purchase
 			custDBDAO.purchaseCoupon(currentCustomer, coupon);
 		} catch (Exception e) {
 			System.out.println(e.getMessage() + ", purchase failed");
 		}
 	}
-
+	public Collection<Coupon> gettotalCoupons() 
+	{
+		Collection<Coupon> allCoupons = null;
+		try	{
+			allCoupons = coupDBDAO.getAllCoupons();
+		}catch(WaitingForConnectionInterrupted
+				| ClosedConnectionStatementCreationException
+				| ConnectionCloseException e)	{
+			System.out.println(e.getMessage() + ", failed to get coupons");
+		}
+		return allCoupons;
+	}
 	// Returns all coupons owned by the Customer
 	public Collection<Coupon> getAllPurchasedCoupons() {
 		// save coupons here

@@ -119,6 +119,7 @@ public class CompanyFacade implements ClientFacade
 		}
 		return allCoupons;
 	}
+	
 	// Returns Collection<Coupon> of all existing coupons of the company of a certain type
 	public Collection<Coupon> getCouponByType(CouponType type) 
 	{

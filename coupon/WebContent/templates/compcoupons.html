@@ -1,0 +1,80 @@
+<!-- Adminlogin.html -->
+<div class="container">
+	<div id="header">
+		<h1>view all company coupons</h1>
+	</div>
+	<p>
+		filter by id<input type="text" ng-model="id">
+	</p>
+	<div ng-controller="companyController" id="nav"
+		ng-init="viewAllcoupons()">
+		<input type="button" class="btn btn-primary"  value="refresh" ng-click="viewAllcoupons()" />
+
+		<table boder="10" st-table="rowCollection" class="table table-striped">
+			<thead>
+				<tr>
+					<th>title</th>
+					<th>id</th>
+					<th>amount</th>
+					<th>endDate</th>
+					<th>startDate</th>
+					<th>price</th>
+					<th>message</th>
+					<th>type</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="coupon in coupons.coupon |filter:id">
+					<td>{{coupon.title}}</td>
+					<td>{{coupon.id}}</td>
+					<td>{{coupon.amount}}</td>
+					<td>{{coupon.endDate}}</td>
+					<td>{{coupon.startDate}}</td>
+					<td>{{coupon.price}}</td>
+					<td>{{coupon.message}}</td>
+					<td>{{coupon.type}}</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div ng-controller="companyController">
+
+		<h1>delete coupon</h1>
+
+		id<input type="text" ng-model="id"><br /> <input
+			type="button"  class="btn btn-primary" value="delete coupon" ng-click="erasecoupon()" /><br />
+	</div>
+	<h1>update coupon</h1>
+	<div ng-controller="companyController" id="nav" align="left">
+							
+	
+		id<input type="text" ng-model="id" size="1">
+		 amount <input type="text" ng-model="amount" size="1"> 
+			endDATE <input type="text"ng-model="endD"size="1">  
+			/<input type="text" ng-model="endM"size="1"> 
+			/ <input type="text" ng-model="endY"size="1"> 
+			message <input type="text" ng-model="message"> 
+			price <input type="text" ng-model="price"size="1"> <br /> 
+		
+			<input type="button" class="btn btn-primary"
+			value="update coupon" ng-click="updatecoupon()" /><br />
+	</div>
+	<a href="#/CompanyPage"> Back</a>
+	<style >
+#header {
+	background-color: black;
+	color: white;
+	text-align: center;
+	padding: 5px;
+}
+
+#footer {
+	background-color: black;
+	color: white;
+	clear: both;
+	text-align: center;
+	padding: 10px;
+}
+</style>
+</div>

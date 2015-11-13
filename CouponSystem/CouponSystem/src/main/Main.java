@@ -15,7 +15,7 @@ public class Main
 		
 		// Prepare Company and Customer
 		Company company = new Company("FirstCompany");
-		company.setPassword("123456");
+		company.setPassword("aaa");
 		company.setEmail("thecompany@gmail.com");
 		Customer customer = new Customer("shay");
 		customer.setPassword("1987");
@@ -27,7 +27,7 @@ public class Main
 		coupon.setMessage("this is a coupon");
 		coupon.setPrice(45.0);
 		coupon.setStartDate(java.sql.Date.valueOf("2015-09-13"));
-		coupon.setTitle("FirstCoupon");
+		coupon.setTitle("g");
 		coupon.setImage("jkggjghkj");
 		coupon.setType(CouponType.PETS);
 		
@@ -46,23 +46,23 @@ public class Main
 		//}
 		
 		// Login into Company Facade - on fail prints message, stops program
-	//	if((compFacade = (CompanyFacade) compFacade.login(company.getCompName(), company.getPassword())) != null)
-		//{
+	if((compFacade = (CompanyFacade) compFacade.login(company.getCompName(), company.getPassword())) != null)
+		{
 			// Create coupon - add to DB
-		//	compFacade.createCoupon(coupon);
-		//	System.out.println("Coupon created");
-	//	}
-		//else
-		//{
-		//	System.out.println("Company Login Failed");
-		//	return;
-	//	}
+			//compFacade.createCoupon(coupon);
+			System.out.println("Coupon created");
+		}
+		else
+		{
+			System.out.println("Company Login Failed");
+			return;
+		}
 		
 		// Login into Customer - on fail prints message, stops program
 		if((custFacade = (CustomerFacade) custFacade.login(customer.getCustName(), customer.getPassword())) != null)
 		{
 			// Purchase coupon
-			//custFacade.purchaseCoupon(coupon);
+			custFacade.purchaseCoupon(9);
 System.out.println(custFacade.getAllPurchasedCoupons());			;
 			System.out.println("Coupon purchased by the customer");
 		}

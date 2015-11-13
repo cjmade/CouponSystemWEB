@@ -36,7 +36,7 @@ public class AdminFacade implements ClientFacade
 	public ClientFacade login(String name, String password) throws DatabaseAccessError
 	{
 		// If username/password wrong - throw exception
-		if(name.equals("admin")  & password.equals("1234"))
+		if(name.equals("admin")  && password.equals("1234"))
 		{
 			return this;
 		}
