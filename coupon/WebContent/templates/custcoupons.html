@@ -1,9 +1,11 @@
 <!-- Adminlogin.html -->
 <div class="container">
-  
+   <div id="header">
 <h1>view all customer coupons</h1>
-		<div ng-controller="customerController">
-			<input type="button" value="view all coupons" ng-click="viewAllcustomercoupons()" />
+</div>
+
+		<div ng-controller="customerController" ng-init="viewAllcustomercoupons()">
+			<input type="button" class="btn btn-primary"  value="refresh" ng-click="viewAllcustomercoupons()" />
 
 			<table boder="10" st-table="rowCollection" class="table table-striped">
 				<thead>

@@ -1,8 +1,13 @@
 package core.ws;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,18 +82,19 @@ String str=null;
 		CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 		try {
 			coupons = facade.getAllCoupons();
+			
 		} catch (Exception e) {
 			return null;
 		}
 		return coupons;
 	}
-
+	
 	@POST
-	@Path("createCoupon/{amount}/{startdate}/{enddate}/{message}/{title}/{type}/{price}")
+	@Path("createCoupon/{amount}/{startD}/{startM}/{startY}/{endD}/{endM}/{endY}/{message}/{title}/{type}/{price}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String createCoupon(@PathParam("amount") int amount, @PathParam("startdate") String startdate,
-			@PathParam("enddate") String enddate, @PathParam("message") String message,
+	public String createCoupon(@PathParam("amount") int amount,@PathParam("startD") int startD, @PathParam("startM") int startM , @PathParam("startY") int startY,
+			@PathParam("endD") int endD, @PathParam("endM") int endM , @PathParam("endY") int endY, @PathParam("message") String message,
 			@PathParam("title") String title, @PathParam("type") CouponType type, @PathParam("price") double price)
 					throws ConnectionCloseException, ClosedConnectionStatementCreationException,
 					FailedToCreateCouponException {
@@ -98,29 +104,28 @@ String str=null;
 		}
 		CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 		Coupon coupon = new Coupon();
+		
+		String startDate =startY+"-"+startM+"-"+startD;
+		String endDate =endY+"-"+endM+"-"+endD;
 		coupon.setAmount(amount);
-		coupon.setEndDate(java.sql.Date.valueOf(enddate));
+		coupon.setEndDate(java.sql.Date.valueOf(endDate));
 		coupon.setMessage(message);
-		coupon.setStartDate(java.sql.Date.valueOf(startdate));
+		coupon.setStartDate(java.sql.Date.valueOf(startDate));
 		coupon.setPrice(price);
 		coupon.setType(type);
 		coupon.setTitle(title);
-		// ObjectMapper mapper = new ObjectMapper();
-		// try {
-		// coupon = mapper.readValue(jsonCoupon, Coupon.class);
-		// } catch (IOException e) {
-		// TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		
 		facade.createCoupon(coupon);
 		return "created";
 	}
+	
 
 	@PUT
-	@Path("updateCoupon/{coupon}")
+	@Path("updateCoupon/{id}/{amount}/{endD}/{endM}/{endY}/{message}/{price}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String updateCoupon(@PathParam("coupon") String jsonCoupon) {
+	public String updateCoupon(@PathParam("id") long id,@PathParam("amount") int amount,@PathParam("endD") int endD, @PathParam("endM") int endM , @PathParam("endY") int endY, @PathParam("message") String message,
+			 @PathParam("price") double price) {
 		HttpSession session = request.getSession(false);
 
 		if (session == null) {
@@ -131,9 +136,13 @@ String str=null;
 
 		try {
 			CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
-			Coupon coupon = null;
-			ObjectMapper mapper = new ObjectMapper();
-			coupon = mapper.readValue(jsonCoupon, Coupon.class);
+			Coupon coupon = new Coupon();
+			coupon=facade.getCoupon((int) id);
+			String endDate =endY+"-"+endM+"-"+endD;
+			coupon.setAmount(amount);
+			coupon.setEndDate(java.sql.Date.valueOf(endDate));
+			coupon.setMessage(message);
+			coupon.setPrice(price);
 			facade.updateCoupon(coupon);
 		} catch (Exception e) {
 			return "update Failed " + e.getMessage();
@@ -142,10 +151,10 @@ String str=null;
 	}
 
 	@DELETE
-	@Path("removeCoupon/{coupon}")
+	@Path("removeCoupon/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String removeCoupon(@PathParam("coupon") String jsonCoupon) {
+	public String removeCoupon(@PathParam("id") long id) {
 		HttpSession session = request.getSession(false);
 
 		if (session == null) {
@@ -157,8 +166,7 @@ String str=null;
 		try {
 			CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 			Coupon coupon = null;
-			ObjectMapper mapper = new ObjectMapper();
-			coupon = mapper.readValue(jsonCoupon, Coupon.class);
+			coupon=facade.getCoupon((int) id);
 			facade.removeCoupon(coupon);
 		} catch (Exception e) {
 			return "remove Failed " + e.getMessage();
@@ -167,7 +175,23 @@ String str=null;
 	}
 
 	@GET
-	@Path("ByType/{type}") // JSon Coupon
+	@Path("getTypes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<StringWrapper> getCouponTypes() {
+		
+		List<StringWrapper> types = new ArrayList<>();
+		CouponType[] ctArray = CouponType.values(); 
+		
+		for (int i=0;i<ctArray.length;i++) {
+			
+			StringWrapper type =  new StringWrapper();			
+			type.setValue(ctArray[i].name());
+			types.add(type);
+		}		
+		return types;
+	}
+	@POST
+	@Path("ByType/{type}") 
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Coupon> getCouponsByType(@PathParam("type") CouponType type) {
 
@@ -207,9 +231,9 @@ String str=null;
 	}
 
 	@GET
-	@Path("Bydate/{date}") // JSon Coupon
+	@Path("Bydate/{year}/{month}/{day}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<Coupon> getCouponsByDate(@PathParam("date") String date) {
+	public Collection<Coupon> getCouponsByDate(@PathParam("year") String year,@PathParam("month") String month,@PathParam("day") String day) {
 
 		Collection<Coupon> coupons;
 		HttpSession session = request.getSession(false);
@@ -219,10 +243,12 @@ String str=null;
 
 		CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 		try {
+			String date =year+"-"+month+"-"+day;
 			coupons = facade.getCouponTillDate(date);
 		} catch (Exception e) {
 			return null;
 		}
 		return coupons;
 	}
+	
 }

@@ -1,11 +1,43 @@
 <!-- Adminlogin.html -->
-<div class="container">
+<div class="container" >
+<div id="header">
     <h2>please insert the company details </h2>
-		<div ng-controller="adminController">
-			name<input type="text" ng-model="user"><br /> 
-			mail:     <input type="text" ng-model="mail"><br /> 
-			pass: <input type="text" ng-model="pass"> 
-			<input type="button" value="add new company" ng-click="getnew()" /><br /> 	
+  
+</div>
+
+		<div ng-controller="adminController" id="nav" class="form-group">
+			name<input type="text" ng-model="user" class="form-control"><br /> 
+			mail:     <input type="text" ng-model="mail" class="form-control"><br /> 
+			pass: <input type="text" ng-model="pass" class="form-control"> 
+			<input type="button" class="btn btn-primary"  value="add new company" ng-click="getnew()" /><br /> 	
+		<a href="#/adminPage"  class="btn btn-primary"> Back to Admin</a>
 		</div>
-     <a href="#/CompanyPage"> Back</a>
+    
+     		<img src="comp.jpg" class="img-thumbnail" alt="Cinque Terre" width="500" height="500" aligh="right">
+    
+     <style type="text/css">
+#header {
+    background-color:black;
+    color:white;
+    text-align:center;
+    padding:5px;
+}
+#nav {
+    line-height:10px;
+    background-color:lightblue;
+    height:300px;
+    width:300px;
+    float:left;
+    padding:5px; 
+}
+
+
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:10px; 
+}
+</style>
 </div>

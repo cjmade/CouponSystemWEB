@@ -1,9 +1,11 @@
 package core.ws;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Collection;
 
-
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +19,10 @@ import javax.ws.rs.Produces;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.apache.catalina.Session;
+
 
 
 import facades.AdminFacade;
@@ -58,18 +64,10 @@ public class AdminsService {
 		session.setAttribute("pass", pass);
 		return str;
 	}
-	@POST
-	@Path("logout")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String login() {
-		
-			request.getSession(true).invalidate();
-		
-		return "logout ";
+	
 
-		
-	}
-
+	
+	
 	@GET
 	@Path("getAllCompanies")
 	@Produces(MediaType.APPLICATION_JSON)

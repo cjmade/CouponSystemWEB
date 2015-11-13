@@ -33,6 +33,14 @@ app.config(function($routeProvider) {
 		templateUrl: "templates/custcoupons.html",
 		controller: 'customerController'
 	})
+	.when('/compcoupons', {
+		templateUrl: "templates/compcoupons.html",
+		controller: 'customerController'
+	})
+	.when('/compcouponby', {
+		templateUrl: "templates/compcouponby.html",
+		controller: 'customerController'
+	})
 	.when('/custcouponsprice', {
 		templateUrl: "templates/custcouponsprice.html",
 		controller: 'customerController'
@@ -64,8 +72,9 @@ app.controller(
 			// on load
 			$scope.loginResult = "no body";
 var log=$scope.type;	
-			// admin login
+			//  login
 			$scope.login = function() {
+				
 				$http.post(
 						"rest/"+$scope.type+"/login/" + $scope.user + "/" + $scope.pass)
 						.success(function(response) {
@@ -101,16 +110,19 @@ app.controller(
 		// /////company/////////
 			// get all companies
 			$scope.viewAll = function() {
+				
 				$http.get("rest/admin/getAllCompanies").success(
 						function(response) {
 							$scope.companies = response;
 						});
+				
 			};
+			
 			// get company
 			$scope.viewcompany = function() {
 				$http.get("rest/admin/GetCompany" + $scope.id).success(
 						function(response) {
-							$scope.company = response;
+							$scope.companyfound = response;
 						});
 			};
 			// new company
@@ -139,6 +151,7 @@ app.controller(
 							$scope.updatecompany = response;
 						});
 			};
+			
 // /////customer/////////
 			// get all customers
 			$scope.viewAllcust = function() {
@@ -146,6 +159,7 @@ app.controller(
 						function(response) {
 							$scope.customers = response;
 						});
+				
 			};
 			// get customer
 			$scope.viewcustomer = function() {
@@ -179,13 +193,13 @@ app.controller(
 							$scope.updatecustomer = response;
 						});
 			};
-			$scope.logout=function($location) {
-				$http.put(
-						"rest/admin/logout" ).success(
-						function(response) {
-							$scope.out = response;
-						});
-			};
+			function resetForm() {
+				
+				$scope.id="";
+				
+				
+			}
+			
 		});
 
 // ///////company service////////
@@ -196,25 +210,23 @@ app.controller(
 			// get all coupons
 			$scope.viewAllcoupons = function() {
 				$http.get("rest/company/getAllCoupons").success(
-						function(data) {
-							$scope.$apply(); // used $scope.$apply() to update the scope.
-			                
-							$scope.coupons = data;
-							$scope.$apply();
-							console.log($scope.coupons);
+						function(response) {
+							$scope.coupons = response;
+							
 						});
 			};
+			
 			// new coupon
 			$scope.getnewcoup = function() {
 				$http.post(
-						"rest/company/createCoupon/" + $scope.amount+ "/" + $scope.startdate+ "/" + $scope.enddate+ "/" + $scope.message+ "/" + $scope.title+ "/" + $scope.type+ "/" + $scope.price).success(
+						"rest/company/createCoupon/" + $scope.amount+ "/" + $scope.startD+ "/"+ $scope.startM+ "/"+ $scope.startY+ "/" + $scope.endD+ "/" + $scope.endM+ "/"  + $scope.endY+ "/"+ $scope.message+ "/" + $scope.title+ "/" + $scope.type+ "/" + $scope.price).success(
 						function(response) {
 							$scope.newcoup= response;
 						});
 			};
 			// DeleteCoupon
 			$scope.erasecoupon = function() {
-				$http.delete("rest/company/DeleteCoupon/" + $scope.coupon).success(
+				$http.delete("rest/company/removeCoupon/" + $scope.id).success(
 						function(response) {
 							$scope.deletecoupon= response;
 						});
@@ -222,9 +234,35 @@ app.controller(
 			// updateCoupon
 			$scope.updatecoupon = function() {
 				$http.put(
-						"rest/company/updateCoupon/" + $scope.coupon).success(
+						"rest/company/updateCoupon/"+ $scope.id+ "/"+ $scope.amount+ "/" + $scope.endD+ "/" + $scope.endM+ "/"  + $scope.endY+ "/"+ $scope.message+ "/" + $scope.price).success(
 						function(response) {
-							$scope.updatecoup = response;
+							$scope.updatecoupon = response;
+						});
+			};
+			$http.get("rest/company/getTypes").success(function(response){
+				$scope.types=response.stringWrapper;
+			});
+			// get coupon by price
+			$scope.byprice = function() {
+				$http.get(
+						"rest/company/ById/" + $scope.id).success(
+						function(response) {
+							$scope.byprice= response;
+						});
+			};
+			// get coupon by type
+			$scope.bytype = function() {
+				$http.post(
+						"rest/company/ByType/" + $scope.type).success(
+						function(response) {
+							$scope.getbytype= response;
+						});
+			};
+			$scope.bydate = function() {
+				$http.get(
+						"rest/company/Bydate/" + $scope.year+"/"+$scope.month+"/"+$scope.day).success(
+						function(response) {
+							$scope.getbydate= response;
 						});
 			};
 		});
@@ -238,6 +276,13 @@ app.controller(
 				$http.get("rest/customer/getAllCoupons").success(
 						function(response) {
 							$scope.custcoupons = response;
+							
+						});
+			};
+			$scope.viewtotalcoupons = function() {
+				$http.get("rest/customer/gettotalCoupons").success(
+						function(response) {
+							$scope.totalcoupons = response;
 							
 						});
 			};
@@ -260,9 +305,13 @@ app.controller(
 			// purchaseCoupon
 			$scope.purchaseCoupon = function() {
 				$http.put(
-						"rest/customer/purchaseCoupon/" + $scope.coupon).success(
+						"rest/customer/purchaseCoupon/" + $scope.id).success(
 						function(response) {
-							$scope.purchcoupon = response;
+							$scope.purchaseCoupon = response;
 						});
 			};
+			$http.get("rest/customer/getTypes").success(function(response){
+				$scope.types=response.stringWrapper;
+			});
+			
 		});

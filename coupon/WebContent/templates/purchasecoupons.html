@@ -1,62 +1,63 @@
 <!-- Adminlogin.html -->
 <div class="container">
-    <h2>customer</h2>
-     <h2>admin manage </h2>
-  <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">login page</a>
-    </div>
-    <div>
-      <ul class="nav navbar-nav">
-        
-        <li><a href="#/newcompany">add new company</a></li>
-        <li><a href="#/updatecompany">update company</a></li> 
-        <li><a href="#/managecompany">manage company</a></li> 
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-  
-<h1>view all customer coupons</h1>
-		<div ng-controller="customerController">
-			<input type="button" value="view all coupons" ng-click="viewAllcustomercoupons()" />
-<td>title</td>
-					<td> </td>
-					<td>id</td>
-					<td> </td>
-					<td>{{coupon.amount}}</td>
-					<td>" "</td>
-					<td>{{coupon.endDate}}</td>
-					<td>" "</td>
-					<td>{{coupon.startDate}}</td>
-					<td>" "</td>
-					<td>{{coupon.price}}</td>
-					<td>" "</td>
-					<td>{{coupon.message}}</td>
-					<td>" "</td>
-					<td>{{coupon.type}}</td>
-			<table boder="10">
-				<tr ng-repeat="coupon in custcoupons">
-					<td>{{coupon.title}}</td>
-					<td> </td>
-					<td>{{coupon.id}}</td>
-					<td> </td>
-					<td>{{coupon.amount}}</td>
-					<td> </td>
-					<td>{{coupon.endDate}}</td>
-					<td> </td>
-					<td>{{coupon.startDate}}</td>
-					<td> </td>
-					<td>{{coupon.price}}</td>
-					<td> </td>
-					<td>{{coupon.message}}</td>
-					<td> </td>
-					<td>{{coupon.type}}</td>
-					
+	<div id="header">
+		<h2>please insert the coupon details</h2>
+	</div>
+
+	<div ng-controller="customerController" id="nav" align="left">
+		<input type="text" ng-model="id">coupon id to buy<br /> <input
+			type="button" class="btn btn-primary" value="buy" ng-click="purchaseCoupon()" /><br />
+		<hr />
+
+	</div>
+	<div ng-controller="customerController" ng-init="viewtotalcoupons()">
+	
+
+		<table boder="10" st-table="rowCollection" class="table table-striped">
+			<thead>
+				<tr>
+					<th>title</th>
+					<th>id</th>
+					<th>amount</th>
+					<th>endDate</th>
+					<th>startDate</th>
+					<th>price</th>
+					<th>message</th>
+					<th>type</th>
 				</tr>
-			</table>
-		</div>
-    <a href="#/CustomerPage"> Back</a>
+			</thead>
+			<tbody>
+				<tr ng-repeat="coupon in totalcoupons.coupon">
+					<td>{{coupon.title}}</td>
+					<td>{{coupon.id}}</td>
+					<td>{{coupon.amount}}</td>
+					<td>{{coupon.endDate}}</td>
+					<td>{{coupon.startDate}}</td>
+					<td>{{coupon.price}}</td>
+					<td>{{coupon.message}}</td>
+					<td>{{coupon.type}}</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<a href="#/CustomerPage"> Back</a>
+
+	<style>
+#header {
+	background-color: black;
+	color: white;
+	text-align: center;
+	padding: 5px;
+}
+
+#footer {
+	background-color: black;
+	color: white;
+	clear: both;
+	text-align: center;
+	padding: 10px;
+}
+</style>
 </div>
+

@@ -1,22 +1,52 @@
 
 <div class="container">
+ <div id="header">
+  <h2>please insert the coupon details </h2>
+</div>
+  
+    <div  ng-controller="companyController" id="nav" align="left">
+     		 <input type="text" ng-model="amount">amount<br /> 
+			   <input type="text"  ng-model="startD" size="1">/
+			     <input type="text"  ng-model="startM"size="1">/
+			    <input type="text"  ng-model="startY"size="1">start date<br /> 
+			 <input type="text" ng-model="endD"size="1">/
+			<input type="text" ng-model="endM"size="1">/ 
+			<input type="text" ng-model="endY"size="1">end date <br />
+			<input type="text" ng-model="price">price<br /> 
+			  <input type="text" ng-model="message">message  <br /> 
+			<select ng-model="type" ng-change="getnewcoup()">
+		<option ng-repeat="x in types">{{x.value}}</option>
+	</select>type
+			<br /> 
+			 <input type="text" ng-model="title">title<br />
+			
+  <input type="file" name="pic" accept="image/*">
+  <input type="submit" ng-model="image">
 
-    <h2>please insert the coupon details </h2>
-    <div  ng-controller="companyController">
-      amount<input type="text" ng-model="amount"><br /> 
-			start date:     <input type="text"  ng-model="startdate"><br /> 
-			end date: <input type="text" ng-model="enddate"> <br />
-			price<input type="text" ng-model="price"><br /> 
-			message    <input type="text" ng-model="message"><br /> 
-			type <input type="text" ng-model="type"> <br />
-			title <input type="text" ng-model="title"><br />
-      <input type="button" value="add new coupon" ng-click="getnewcoup()" /><br /> 
+      <input type="button" class="btn btn-primary" value="add new coupon" ng-click="getnewcoup()" /><br /> 
         <hr/>  
-        {{$scope.newcoup}}
+        
      
 			
 	
 				
 		</div>
+		
      <a href="#/CompanyPage"> Back</a>
+     <style>
+#header {
+    background-color:black;
+    color:white;
+    text-align:center;
+    padding:5px;
+
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:10px; 
+}
+</style>
 </div>

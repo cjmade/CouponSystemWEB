@@ -1,7 +1,10 @@
 package core.ws;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-
+import facades.CompanyFacade;
 import facades.CustomerFacade;
 import objects.ClientType;
 import objects.Coupon;
@@ -72,6 +75,26 @@ String str=null;
 		CustomerFacade facade = (CustomerFacade) session.getAttribute("facade");
 		try {
 			coupons = facade.getAllPurchasedCoupons();
+			
+		} catch (Exception e) {
+			return null;
+		}
+		return coupons;
+	}
+	@GET
+	@Path("gettotalCoupons")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Coupon> gettotalCoupons() {
+
+		Collection<Coupon> coupons;
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			return null;
+		}
+		CustomerFacade facade = (CustomerFacade) session.getAttribute("facade");
+		try {
+			coupons = facade.gettotalCoupons();
+			
 		} catch (Exception e) {
 			return null;
 		}
@@ -97,6 +120,23 @@ String str=null;
 		return coupons;
 	}
 
+	@GET
+	@Path("getTypes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<StringWrapper> getCouponTypes() {
+		
+		List<StringWrapper> types = new ArrayList<>();
+		CouponType[] ctArray = CouponType.values(); 
+		
+		for (int i=0;i<ctArray.length;i++) {
+			
+			StringWrapper type =  new StringWrapper();			
+			type.setValue(ctArray[i].name());
+			types.add(type);
+		}		
+		return types;
+	}
+	
 	@POST
 	@Path("ByType/{type}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
@@ -118,10 +158,10 @@ String str=null;
 	}
 
 	@PUT
-	@Path("purchaseCoupon/{coupon}")
+	@Path("purchaseCoupon/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String purchaseCoupon(@PathParam("coupon") String jsonCoupon) {
+	public String purchaseCoupon(@PathParam("id")long id) {
 		HttpSession session = request.getSession(false);
 
 		if (session == null) {
@@ -133,10 +173,8 @@ String str=null;
 		
 		try {
 			CustomerFacade facade = (CustomerFacade) session.getAttribute("facade");
-			Coupon coupon = null;
-			ObjectMapper mapper = new ObjectMapper();
-			coupon = mapper.readValue(jsonCoupon, Coupon.class);
-			facade.purchaseCoupon(coupon);
+			
+			facade.purchaseCoupon(id);
 		} catch (Exception e) {
 			return "Purchase Failed " + e.getMessage();
 		}
