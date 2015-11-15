@@ -61,6 +61,9 @@ app.config(function($routeProvider) {
 		templateUrl: "templates/customer.html",
 		controller: 'companyController'
 	})
+	.when('/upload/:id', {
+		templateUrl: "templates/uploadImage.html",		
+	})
 		.otherwise({
 			redirectTo: '/'
 		});
@@ -72,6 +75,11 @@ app.controller(
 			// on load
 			$scope.loginResult = "no body";
 var log=$scope.type;	
+
+
+    
+
+
 			//  login
 			$scope.login = function() {
 				
@@ -98,6 +106,7 @@ var log=$scope.type;
 							}
 							else {
 								$scope.loginlog = response;
+								alert("password or username is wrong");
 							}
 						});
 			};
@@ -114,6 +123,7 @@ app.controller(
 				$http.get("rest/admin/getAllCompanies").success(
 						function(response) {
 							$scope.companies = response;
+							
 						});
 				
 			};
@@ -126,12 +136,17 @@ app.controller(
 						});
 			};
 			// new company
-			$scope.getnew = function() {
+			$scope.getnew = function($window) {
+				response=null;
 				$http.post(
 						"rest/admin/AddCompany/" + $scope.user + "/"
 								+ $scope.mail + "/" + $scope.pass).success(
 						function(response) {
+							
 							$scope.newcompany = response;
+							  $window.alert("bla bla");
+						
+							
 							
 						});
 			};
@@ -140,6 +155,7 @@ app.controller(
 				$http.delete("rest/admin/DeleteCompany/" + $scope.id).success(
 						function(response) {
 							$scope.deletecompany = response;
+							
 						});
 			};
 			// updateCompany
@@ -149,6 +165,7 @@ app.controller(
 								+ $scope.pass + "/" + $scope.mail).success(
 						function(response) {
 							$scope.updatecompany = response;
+							
 						});
 			};
 			
@@ -175,6 +192,7 @@ app.controller(
 								+ $scope.pass).success(
 						function(response) {
 							$scope.newcustomer= response;
+							
 						});
 			};
 			// DeleteCustomer
@@ -182,6 +200,7 @@ app.controller(
 				$http.delete("rest/admin/DeleteCustomer/" + $scope.id).success(
 						function(response) {
 							$scope.deletecustomer= response;
+							
 						});
 			};
 			// updateCustomer
@@ -191,6 +210,7 @@ app.controller(
 								+ $scope.pass ).success(
 						function(response) {
 							$scope.updatecustomer = response;
+							
 						});
 			};
 			function resetForm() {
@@ -222,6 +242,7 @@ app.controller(
 						"rest/company/createCoupon/" + $scope.amount+ "/" + $scope.startD+ "/"+ $scope.startM+ "/"+ $scope.startY+ "/" + $scope.endD+ "/" + $scope.endM+ "/"  + $scope.endY+ "/"+ $scope.message+ "/" + $scope.title+ "/" + $scope.type+ "/" + $scope.price).success(
 						function(response) {
 							$scope.newcoup= response;
+							
 						});
 			};
 			// DeleteCoupon
@@ -229,6 +250,7 @@ app.controller(
 				$http.delete("rest/company/removeCoupon/" + $scope.id).success(
 						function(response) {
 							$scope.deletecoupon= response;
+							
 						});
 			};
 			// updateCoupon
@@ -237,6 +259,7 @@ app.controller(
 						"rest/company/updateCoupon/"+ $scope.id+ "/"+ $scope.amount+ "/" + $scope.endD+ "/" + $scope.endM+ "/"  + $scope.endY+ "/"+ $scope.message+ "/" + $scope.price).success(
 						function(response) {
 							$scope.updatecoupon = response;
+							
 						});
 			};
 			$http.get("rest/company/getTypes").success(function(response){
@@ -265,6 +288,7 @@ app.controller(
 							$scope.getbydate= response;
 						});
 			};
+		
 		});
 // ///////customer service////////
 app.controller(
@@ -315,3 +339,102 @@ app.controller(
 			});
 			
 		});
+app.controller("uploadImage", function($scope,$http,$location,$routeParams,$rootScope) {
+	
+	chkLogin($http, $location, $rootScope, "company");
+	$rootScope.companyNavBar = true;
+	$rootScope.adminNavBar = false;
+	$rootScope.mainCompany = true;
+	$rootScope.customerNavBar = false;
+
+	$scope.file = null;
+	
+	var file;
+	//retrieve the coupon's id from URL
+	var title = $routeParams.title;	
+	
+	$scope.result = "";		
+	refreshImg();	
+	
+	//get the file name from the controller (used by library)
+	$scope.$watch('file', function (newVal) {
+       if (newVal) {
+         file = newVal;        
+       }
+     });
+	
+    //send the image to the server via form (file validation is triggered by value change)
+	$scope.show = function() {
+    	 var fd = new FormData();
+         fd.append('file', file);
+         fd.append('id',id);
+
+         $http.post("rest/company/imageUpload",
+        		   fd, {
+        	 				transformRequest: angular.identity, 
+        	 				headers: {'Content-Type': undefined 
+        	 			}
+        }).success(function(response) {
+        	$scope.result = "File was successfuly loaded.";
+        	refreshImg();
+        }).error(function(response){
+        	$scope.result = "Something went wrong, try again";
+        });         
+
+     }
+     
+     function refreshImg(){
+    	 $http.get("rest/company/ById/"+id).success(function(response){		
+    			$scope.coupon = response;
+    			if ($scope.coupon == "") { //someone tries to sniff coupons from address... cause login.
+    				$location.path("/");
+    			}
+    		}).error(function(response){
+    		});
+     }
+});
+//date stringify 
+function dateToString (date) {
+	var year = date.getFullYear();
+	var month = date.getMonth()+1;
+	var day = date.getDate();
+	
+	if (day < 10) { day = "0"+day;}
+	if (month <10) {month = "0"+month;}
+	return day+"/"+month+"/"+year;
+}
+
+
+
+//file extention validation
+function validateFile(file) {
+	  
+	  //Function designed to permit only images file to be uploaded to server.
+	  
+	  //allowd files extentions: 
+	  var allowed = ["jpg","jpeg","gif","png","bmp"];
+	  
+	  //get file name from control
+	  var fullPath = document.getElementById('fileInput').value;
+	  if (fullPath) {
+	  	var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+	  	var filename = fullPath.substring(startIndex);
+	  	if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+	  		filename = filename.substring(1);
+	  	}
+	  	
+	  	//get file extention
+	  	var ext = filename.substr(filename.lastIndexOf(".")+1);
+	  	
+	  	//chk if extention is allowed (exists in array) - -1 will be return when false
+	  	if (allowed.indexOf(ext.toLowerCase()) < 0)
+	  	{	  		
+	  		document.getElementById("uploadBTN").disabled = true;
+	  		document.getElementById("error").style.visibility = "visible";
+	  	}
+	  	else{
+	  		document.getElementById("uploadBTN").disabled = false;
+	  		document.getElementById("error").style.visibility = "hidden";
+	  	}
+	  }
+}

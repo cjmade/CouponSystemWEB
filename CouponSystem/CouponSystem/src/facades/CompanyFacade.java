@@ -119,6 +119,19 @@ public class CompanyFacade implements ClientFacade
 		}
 		return allCoupons;
 	}
+	public Coupon getCoupon(String title) 
+	{
+		Coupon coupon = null;
+		try	{
+			coupon = coupDBDAO.getCoupon(title);
+		}catch(WaitingForConnectionInterrupted
+				| ClosedConnectionStatementCreationException
+				| ConnectionCloseException e)		{
+			System.out.println(e.getMessage() + ", failed to update coupon");
+		}
+		return coupon;
+	}
+	// Returns Collection<Coupon> of all existing coupons of the company
 	
 	// Returns Collection<Coupon> of all existing coupons of the company of a certain type
 	public Collection<Coupon> getCouponByType(CouponType type) 

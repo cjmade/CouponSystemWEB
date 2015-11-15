@@ -1,13 +1,17 @@
 package core.ws;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,17 +24,24 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
 
 import exceptions.ClosedConnectionStatementCreationException;
 import exceptions.ConnectionCloseException;
 import exceptions.FailedToCreateCouponException;
 import facades.CompanyFacade;
-import facades.CustomerFacade;
+
 import objects.ClientType;
 import objects.Coupon;
 import objects.CouponType;
@@ -52,13 +63,13 @@ public class CompanyService {
 		if (request.getSession(false) != null) {
 			request.getSession(false).invalidate();
 		}
-String str=null;
+		String str = null;
 		CompanyFacade facade;
 		try {
 			CouponSystem sys = CouponSystem.getInstance();
 			facade = (CompanyFacade) sys.login(user, pass, ClientType.company);
-			if(facade!=null){
-				str="success";
+			if (facade != null) {
+				str = "success";
 			}
 		} catch (Exception e) {
 			return e.getMessage();
@@ -66,7 +77,7 @@ String str=null;
 		HttpSession session = request.getSession(true);
 		session.setAttribute("facade", facade);
 		session.setAttribute("user", user);
-		return "success";
+		return str;
 	}
 
 	@GET
@@ -82,19 +93,20 @@ String str=null;
 		CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 		try {
 			coupons = facade.getAllCoupons();
-			
+
 		} catch (Exception e) {
 			return null;
 		}
 		return coupons;
 	}
-	
+
 	@POST
 	@Path("createCoupon/{amount}/{startD}/{startM}/{startY}/{endD}/{endM}/{endY}/{message}/{title}/{type}/{price}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String createCoupon(@PathParam("amount") int amount,@PathParam("startD") int startD, @PathParam("startM") int startM , @PathParam("startY") int startY,
-			@PathParam("endD") int endD, @PathParam("endM") int endM , @PathParam("endY") int endY, @PathParam("message") String message,
+	public String createCoupon(@PathParam("amount") int amount, @PathParam("startD") int startD,
+			@PathParam("startM") int startM, @PathParam("startY") int startY, @PathParam("endD") int endD,
+			@PathParam("endM") int endM, @PathParam("endY") int endY, @PathParam("message") String message,
 			@PathParam("title") String title, @PathParam("type") CouponType type, @PathParam("price") double price)
 					throws ConnectionCloseException, ClosedConnectionStatementCreationException,
 					FailedToCreateCouponException {
@@ -104,9 +116,9 @@ String str=null;
 		}
 		CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 		Coupon coupon = new Coupon();
-		
-		String startDate =startY+"-"+startM+"-"+startD;
-		String endDate =endY+"-"+endM+"-"+endD;
+
+		String startDate = startY + "-" + startM + "-" + startD;
+		String endDate = endY + "-" + endM + "-" + endD;
 		coupon.setAmount(amount);
 		coupon.setEndDate(java.sql.Date.valueOf(endDate));
 		coupon.setMessage(message);
@@ -114,18 +126,18 @@ String str=null;
 		coupon.setPrice(price);
 		coupon.setType(type);
 		coupon.setTitle(title);
-		
+
 		facade.createCoupon(coupon);
 		return "created";
 	}
-	
 
 	@PUT
 	@Path("updateCoupon/{id}/{amount}/{endD}/{endM}/{endY}/{message}/{price}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String updateCoupon(@PathParam("id") long id,@PathParam("amount") int amount,@PathParam("endD") int endD, @PathParam("endM") int endM , @PathParam("endY") int endY, @PathParam("message") String message,
-			 @PathParam("price") double price) {
+	public String updateCoupon(@PathParam("id") long id, @PathParam("amount") int amount, @PathParam("endD") int endD,
+			@PathParam("endM") int endM, @PathParam("endY") int endY, @PathParam("message") String message,
+			@PathParam("price") double price) {
 		HttpSession session = request.getSession(false);
 
 		if (session == null) {
@@ -137,8 +149,8 @@ String str=null;
 		try {
 			CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 			Coupon coupon = new Coupon();
-			coupon=facade.getCoupon((int) id);
-			String endDate =endY+"-"+endM+"-"+endD;
+			coupon = facade.getCoupon((int) id);
+			String endDate = endY + "-" + endM + "-" + endD;
 			coupon.setAmount(amount);
 			coupon.setEndDate(java.sql.Date.valueOf(endDate));
 			coupon.setMessage(message);
@@ -166,7 +178,7 @@ String str=null;
 		try {
 			CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 			Coupon coupon = null;
-			coupon=facade.getCoupon((int) id);
+			coupon = facade.getCoupon((int) id);
 			facade.removeCoupon(coupon);
 		} catch (Exception e) {
 			return "remove Failed " + e.getMessage();
@@ -178,20 +190,21 @@ String str=null;
 	@Path("getTypes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<StringWrapper> getCouponTypes() {
-		
+
 		List<StringWrapper> types = new ArrayList<>();
-		CouponType[] ctArray = CouponType.values(); 
-		
-		for (int i=0;i<ctArray.length;i++) {
-			
-			StringWrapper type =  new StringWrapper();			
+		CouponType[] ctArray = CouponType.values();
+
+		for (int i = 0; i < ctArray.length; i++) {
+
+			StringWrapper type = new StringWrapper();
 			type.setValue(ctArray[i].name());
 			types.add(type);
-		}		
+		}
 		return types;
 	}
+
 	@POST
-	@Path("ByType/{type}") 
+	@Path("ByType/{type}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Coupon> getCouponsByType(@PathParam("type") CouponType type) {
 
@@ -233,7 +246,8 @@ String str=null;
 	@GET
 	@Path("Bydate/{year}/{month}/{day}") // JSon Coupon
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<Coupon> getCouponsByDate(@PathParam("year") String year,@PathParam("month") String month,@PathParam("day") String day) {
+	public Collection<Coupon> getCouponsByDate(@PathParam("year") String year, @PathParam("month") String month,
+			@PathParam("day") String day) {
 
 		Collection<Coupon> coupons;
 		HttpSession session = request.getSession(false);
@@ -243,12 +257,63 @@ String str=null;
 
 		CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
 		try {
-			String date =year+"-"+month+"-"+day;
+			String date = year + "-" + month + "-" + day;
 			coupons = facade.getCouponTillDate(date);
+			
 		} catch (Exception e) {
 			return null;
 		}
 		return coupons;
 	}
-	
+
+	// image upload service
+	@POST
+	@Path("imageUpload")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadImg(@FormDataParam("file") InputStream input,
+			@FormDataParam("file") FormDataContentDisposition fileDetails, @FormDataParam("title") String title) {
+
+		CompanyFacade facade = (CompanyFacade) request.getSession(false).getAttribute("facade");
+
+		// Save File
+		
+		String location = "C://Users/shay/Downloads/images/"
+				+ fileDetails.getFileName();
+		boolean result = saveFile(input, location);
+
+		// Update coupon's images column
+		// Free of charge :)
+		Coupon coupon = new Coupon();
+		try {
+			coupon = facade.getCoupon(title);
+			coupon.setImage("images/" + fileDetails.getFileName());
+			facade.updateCoupon(coupon);
+		} catch (Exception e) {
+			return Response.status(500).entity(e.getMessage()).build();
+		}
+		if (!result) {
+			return Response.status(500).entity("File System Problem").build();
+		}
+		//return Response.status(200).build();
+		return null;
+	}
+
+	// save file to server
+	private boolean saveFile(InputStream input, String loc) {
+		try {
+			FileOutputStream out = new FileOutputStream(new File(loc));
+			int read = 0;
+			byte[] bytes = new byte[1024];
+			out = new FileOutputStream(new File(loc));
+			while ((read = input.read(bytes)) > -1) {
+				out.write(bytes, 0, read);
+			}
+			input.close();
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
 }

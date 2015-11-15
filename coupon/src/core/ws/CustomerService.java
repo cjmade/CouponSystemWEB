@@ -59,7 +59,7 @@ String str=null;
 		session.setAttribute("facade", facade);
 		session.setAttribute("user", user);
 		session.setAttribute("pass", pass);
-		return "success";
+		return str;
 	}
 
 	@GET
