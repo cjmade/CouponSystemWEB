@@ -80,7 +80,7 @@ var log=$scope.type;
     
 
 
-			//  login
+			// login
 			$scope.login = function() {
 				
 				$http.post(
@@ -136,37 +136,55 @@ app.controller(
 						});
 			};
 			// new company
-			$scope.getnew = function($window) {
+			$scope.getnew = function() {
 				response=null;
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					alert("company was successfully added");  
 				$http.post(
 						"rest/admin/AddCompany/" + $scope.user + "/"
 								+ $scope.mail + "/" + $scope.pass).success(
 						function(response) {
 							
 							$scope.newcompany = response;
-							  $window.alert("bla bla");
+							
 						
 							
 							
-						});
+						});}
+				else{
+					alert("company wasnt successfully added"); 	
+				}
 			};
 			// DeleteCompany
 			$scope.erase = function() {
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					alert("company was successfully deleted");  
 				$http.delete("rest/admin/DeleteCompany/" + $scope.id).success(
 						function(response) {
 							$scope.deletecompany = response;
 							
-						});
+						});}
+				else{
+					alert("company wasnt successfully added"); 	
+				}
 			};
 			// updateCompany
 			$scope.update = function() {
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					alert("company was successfully updated");
 				$http.put(
 						"rest/admin/UpdateCompany/" + $scope.id + "/"
 								+ $scope.pass + "/" + $scope.mail).success(
 						function(response) {
 							$scope.updatecompany = response;
 							
-						});
+						});}
+				else{
+					alert("company wasnt successfully updated"); 	
+				}
 			};
 			
 // /////customer/////////
@@ -187,31 +205,54 @@ app.controller(
 			};
 			// new customer
 			$scope.getnewcust = function() {
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					alert("customer was successfully added");
 				$http.post(
 						"rest/admin/AddCustomer/" + $scope.CustName + "/"
 								+ $scope.pass).success(
 						function(response) {
 							$scope.newcustomer= response;
 							
-						});
+						});}
+				else{
+					alert("customer wasnt successfully added"); 	
+				}
 			};
 			// DeleteCustomer
 			$scope.erasecustomer = function() {
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					alert("customer was successfully deleted");
 				$http.delete("rest/admin/DeleteCustomer/" + $scope.id).success(
 						function(response) {
 							$scope.deletecustomer= response;
 							
-						});
+						});}
+				else{
+					alert("customer wasnt successfully deleted"); 	
+				}
 			};
 			// updateCustomer
 			$scope.updatecustomer = function() {
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					
 				$http.put(
 						"rest/admin/UpdateCustomer/" + $scope.id + "/"
 								+ $scope.pass ).success(
 						function(response) {
 							$scope.updatecustomer = response;
-							
-						});
+							if(response=="update complited"){
+								alert("customer was successfully updated");
+							}
+							else{
+								alert("customer was not updated id does not exist");
+							}
+						});}
+				else{
+					alert("you canceled the action"); 	
+				}
 			};
 			function resetForm() {
 				
@@ -238,29 +279,49 @@ app.controller(
 			
 			// new coupon
 			$scope.getnewcoup = function() {
+
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					alert("coupon was successfully added");
 				$http.post(
 						"rest/company/createCoupon/" + $scope.amount+ "/" + $scope.startD+ "/"+ $scope.startM+ "/"+ $scope.startY+ "/" + $scope.endD+ "/" + $scope.endM+ "/"  + $scope.endY+ "/"+ $scope.message+ "/" + $scope.title+ "/" + $scope.type+ "/" + $scope.price).success(
 						function(response) {
 							$scope.newcoup= response;
 							
-						});
+						});}
+				else{
+					alert("coupon wasnt successfully added"); 	
+				}
 			};
 			// DeleteCoupon
 			$scope.erasecoupon = function() {
+
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					alert("coupon was successfully removed");
 				$http.delete("rest/company/removeCoupon/" + $scope.id).success(
 						function(response) {
 							$scope.deletecoupon= response;
 							
-						});
+						});}
+				else{
+					alert("coupon wasnt successfully removed"); 	
+				}
 			};
 			// updateCoupon
 			$scope.updatecoupon = function() {
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					alert("coupon was successfully updated");
 				$http.put(
 						"rest/company/updateCoupon/"+ $scope.id+ "/"+ $scope.amount+ "/" + $scope.endD+ "/" + $scope.endM+ "/"  + $scope.endY+ "/"+ $scope.message+ "/" + $scope.price).success(
 						function(response) {
 							$scope.updatecoupon = response;
 							
-						});
+						});}
+			else{
+				alert("coupon wasnt successfully updated"); 	
+			}
 			};
 			$http.get("rest/company/getTypes").success(function(response){
 				$scope.types=response.stringWrapper;
@@ -328,11 +389,17 @@ app.controller(
 			};
 			// purchaseCoupon
 			$scope.purchaseCoupon = function() {
+				var theAnswer = confirm("are you sure?");
+				if(theAnswer){
+					alert("coupon was successfully purchased");
 				$http.put(
 						"rest/customer/purchaseCoupon/" + $scope.id).success(
 						function(response) {
 							$scope.purchaseCoupon = response;
-						});
+						});}
+				else{
+					alert("coupon wasnt successfully purchased"); 	
+				}
 			};
 			$http.get("rest/customer/getTypes").success(function(response){
 				$scope.types=response.stringWrapper;
@@ -350,20 +417,21 @@ app.controller("uploadImage", function($scope,$http,$location,$routeParams,$root
 	$scope.file = null;
 	
 	var file;
-	//retrieve the coupon's id from URL
+	// retrieve the coupon's id from URL
 	var title = $routeParams.title;	
 	
 	$scope.result = "";		
 	refreshImg();	
 	
-	//get the file name from the controller (used by library)
+	// get the file name from the controller (used by library)
 	$scope.$watch('file', function (newVal) {
        if (newVal) {
          file = newVal;        
        }
      });
 	
-    //send the image to the server via form (file validation is triggered by value change)
+    // send the image to the server via form (file validation is triggered by
+	// value change)
 	$scope.show = function() {
     	 var fd = new FormData();
          fd.append('file', file);
@@ -386,14 +454,15 @@ app.controller("uploadImage", function($scope,$http,$location,$routeParams,$root
      function refreshImg(){
     	 $http.get("rest/company/ById/"+id).success(function(response){		
     			$scope.coupon = response;
-    			if ($scope.coupon == "") { //someone tries to sniff coupons from address... cause login.
+    			if ($scope.coupon == "") { // someone tries to sniff coupons
+											// from address... cause login.
     				$location.path("/");
     			}
     		}).error(function(response){
     		});
      }
 });
-//date stringify 
+// date stringify
 function dateToString (date) {
 	var year = date.getFullYear();
 	var month = date.getMonth()+1;
@@ -406,15 +475,16 @@ function dateToString (date) {
 
 
 
-//file extention validation
+// file extention validation
 function validateFile(file) {
 	  
-	  //Function designed to permit only images file to be uploaded to server.
+	  // Function designed to permit only images file to be uploaded to
+		// server.
 	  
-	  //allowd files extentions: 
+	  // allowd files extentions:
 	  var allowed = ["jpg","jpeg","gif","png","bmp"];
 	  
-	  //get file name from control
+	  // get file name from control
 	  var fullPath = document.getElementById('fileInput').value;
 	  if (fullPath) {
 	  	var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
@@ -423,10 +493,11 @@ function validateFile(file) {
 	  		filename = filename.substring(1);
 	  	}
 	  	
-	  	//get file extention
+	  	// get file extention
 	  	var ext = filename.substr(filename.lastIndexOf(".")+1);
 	  	
-	  	//chk if extention is allowed (exists in array) - -1 will be return when false
+	  	// chk if extention is allowed (exists in array) - -1 will be return
+		// when false
 	  	if (allowed.indexOf(ext.toLowerCase()) < 0)
 	  	{	  		
 	  		document.getElementById("uploadBTN").disabled = true;
