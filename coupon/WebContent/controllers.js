@@ -21,6 +21,10 @@ app.config(function($routeProvider) {
 		templateUrl: "templates/newcompany.html",
 		controller: 'adminController'
 	})
+	.when('/newcustomer', {
+		templateUrl: "templates/newcustomer.html",
+		controller: 'adminController'
+	})
 		.when('/updatecompany', {
 		templateUrl: "templates/updatecompany.html",
 		controller: 'adminController'
@@ -266,7 +270,7 @@ app.controller(
 // ///////company service////////
 app.controller(
 		'companyController',
-		function($scope, $http,$location,$rootScope) {
+		function($scope, $http,$location,$rootScope,$window) {
 		// /////company/////////
 			// get all coupons
 			$scope.viewAllcoupons = function() {

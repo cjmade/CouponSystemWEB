@@ -268,7 +268,7 @@ public class CompanyService {
 
 	// image upload service
 	@POST
-	@Path("imageUpload")
+	@Path("imageUpload/{titles}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadImg(@FormDataParam("file") InputStream input,
 			@FormDataParam("file") FormDataContentDisposition fileDetails, @FormDataParam("title") String title) {
