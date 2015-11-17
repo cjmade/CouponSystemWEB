@@ -6,10 +6,10 @@
 
 	<div ng-controller="customerController" id="nav" align="left">
 		<input type="text" ng-model="id">coupon id to buy<br /> <input
-			type="button" class="btn btn-primary" value="buy" ng-click="purchaseCoupon()" /><br />
+			type="button" class="btn btn-primary" value="buy coupon" ng-click="purchaseCoupon()" />
+	<input	type="button" class="btn btn-primary"  value="purchase another"  onclick="myFunction1()" /><br />
 		<hr />
-
-	</div>
+ coupon	</div>
 	<div ng-controller="customerController" ng-init="viewtotalcoupons()">
 	
 
@@ -31,8 +31,8 @@
 					<td>{{coupon.title}}</td>
 					<td>{{coupon.id}}</td>
 					<td>{{coupon.amount}}</td>
-					<td>{{coupon.endDate}}</td>
-					<td>{{coupon.startDate}}</td>
+					<td>{{coupon.endDate| date:'yyyy-MM-dd'}}</td>
+					<td>{{coupon.startDate| date:'yyyy-MM-dd'}}</td>
 					<td>{{coupon.price}}</td>
 					<td>{{coupon.message}}</td>
 					<td>{{coupon.type}}</td>
@@ -41,6 +41,7 @@
 			</tbody>
 		</table>
 	</div>
+	<input	type="button" class="btn btn-success"  value="refresh page"  onclick="myFunction1()" />
 	<a href="#/CustomerPage"class="btn btn-success"> Back to customer</a>
 
 	<style>

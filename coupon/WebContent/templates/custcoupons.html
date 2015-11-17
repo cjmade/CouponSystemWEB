@@ -25,8 +25,8 @@
 					<td>{{coupon.title}}</td>
 					<td>{{coupon.id}}</td>
 					<td>{{coupon.amount}}</td>
-					<td>{{coupon.endDate}}</td>
-					<td>{{coupon.startDate}}</td>
+					<td>{{coupon.endDate| date:'yyyy-MM-dd'}}</td>
+					<td>{{coupon.startDate| date:'yyyy-MM-dd'}}</td>
 					<td>{{coupon.price}}</td>
 					<td>{{coupon.message}}</td>
 					<td>{{coupon.type}}</td>
@@ -35,5 +35,22 @@
 				</tbody>
 			</table>
 		</div>
+		<input	type="button" class="btn btn-success"  value="refresh page"  onclick="myFunction1()" />
     <a href="#/CustomerPage"class="btn btn-success"> Back to customer</a>
+    <style>
+#header {
+	background-color: black;
+	color: white;
+	text-align: center;
+	padding: 5px;
+}
+
+#footer {
+	background-color: black;
+	color: white;
+	clear: both;
+	text-align: center;
+	padding: 10px;
+}
+</style>
 </div>

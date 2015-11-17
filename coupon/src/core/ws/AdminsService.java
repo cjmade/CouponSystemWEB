@@ -121,11 +121,12 @@ public class AdminsService {
 			AdminFacade facade = (AdminFacade) session.getAttribute("facade");
 			comp = facade.getCompany((int) id);
 			facade.removeCompany(comp);
-			return "company was removed";
+			
 
 		} catch (Exception e) {
 			return "company was not removed";
 		}
+		return "company was removed";
 	}
 
 	@PUT
@@ -151,20 +152,27 @@ public class AdminsService {
 		return "update complited";
 	}
 
+	@SuppressWarnings("null")
 	@GET
 	@Path("GetCompany/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Company getCompany(@PathParam("id") long id) {
-
+	public Collection<Company> getCompany(@PathParam("id") long id) {
+		Collection<Company> companies=null;
+		Company company=new Company();
+		
 		HttpSession session = request.getSession(false);
 
 		try {
 			AdminFacade facade = (AdminFacade) session.getAttribute("facade");
-			return facade.getCompany((int) id);
+		company=facade.getCompany((int) id);
+			
+			
 
 		} catch (Exception e) {
 			return null;
 		}
+		companies.add(company);
+		return companies;
 	}
 
 	@GET
@@ -218,11 +226,12 @@ public class AdminsService {
 			AdminFacade facade = (AdminFacade) session.getAttribute("facade");
 			cust = facade.getCustomer((int) id);
 			facade.removeCustomer(cust);
-			return "Customer was removed";
+			
 
 		} catch (Exception e) {
-			return "Customer was not removed";
+			return null;
 		}
+		return "Customer was removed";
 	}
 
 	@PUT

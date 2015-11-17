@@ -208,6 +208,55 @@ public class CouponDBDAO implements CouponDAO {
 		pool.returnConnection(connection);
 		return coupon;
 	}
+	@Override
+	public long getCouponid( ) throws WaitingForConnectionInterrupted, 
+		ClosedConnectionStatementCreationException, ConnectionCloseException 
+	{
+		Connection connection;
+		try
+		{
+			connection = pool.getConnection();
+		}catch(GetConnectionWaitInteruptedException e)
+		{
+			throw new WaitingForConnectionInterrupted();
+		}
+		// Prepare and execute coupon
+		PreparedStatement statement;
+		ResultSet rs;
+		String sql;
+		ArrayList<Long> listid=new ArrayList<Long>();
+		try	{
+			
+			// Prepare SQL message to get the Coupon by the id
+			sql = "SELECT ID FROM APP.COUPON ";
+			statement = connection.prepareStatement(sql);
+			
+			
+			// getting the values into a result set
+			rs = statement.executeQuery();
+			while(rs.next())
+			{
+				listid.add(rs.getLong("ID"));
+			}
+		}catch(SQLException e)	{
+			throw new ClosedConnectionStatementCreationException();
+		}
+		// Close connections
+		try	{
+			rs.close();
+			statement.close();
+		}catch(SQLException e)	{
+			throw new ConnectionCloseException();
+		}
+		long max=0;
+		for(Long id:listid){
+			if(id>max){
+				max=id;
+			}
+		}
+		pool.returnConnection(connection);
+		return max;
+	}
 	// Returns coupon by Title
 	@Override
 	public Coupon getCoupon(String title) throws WaitingForConnectionInterrupted, 

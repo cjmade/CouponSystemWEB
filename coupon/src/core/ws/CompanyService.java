@@ -268,7 +268,7 @@ public class CompanyService {
 
 	// image upload service
 	@POST
-	@Path("imageUpload/{titles}")
+	@Path("imageUpload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadImg(@FormDataParam("file") InputStream input,
 			@FormDataParam("file") FormDataContentDisposition fileDetails, @FormDataParam("title") String title) {
@@ -285,7 +285,8 @@ public class CompanyService {
 		// Free of charge :)
 		Coupon coupon = new Coupon();
 		try {
-			coupon = facade.getCoupon(title);
+			long id=facade.getCouponid();
+			coupon = facade.getCoupon((int) id);
 			coupon.setImage("images/" + fileDetails.getFileName());
 			facade.updateCoupon(coupon);
 		} catch (Exception e) {

@@ -144,34 +144,39 @@ app.controller(
 				response=null;
 				var theAnswer = confirm("are you sure?");
 				if(theAnswer){
-					alert("company was successfully added");  
+					alert("company was successfully added"); 	 
 				$http.post(
 						"rest/admin/AddCompany/" + $scope.user + "/"
 								+ $scope.mail + "/" + $scope.pass).success(
 						function(response) {
-							
 							$scope.newcompany = response;
 							
 						
 							
-							
 						});}
 				else{
-					alert("company wasnt successfully added"); 	
+					alert("action cancelled"); 	
 				}
 			};
 			// DeleteCompany
 			$scope.erase = function() {
 				var theAnswer = confirm("are you sure?");
 				if(theAnswer){
-					alert("company was successfully deleted");  
+					
 				$http.delete("rest/admin/DeleteCompany/" + $scope.id).success(
 						function(response) {
 							$scope.deletecompany = response;
-							
+							$console.log(response);
+							if(response=="company was removed"){
+								alert("company was successfully deleted");  
+							}
+							else
+								{
+								alert("something went wrong"); 	
+								}
 						});}
 				else{
-					alert("company wasnt successfully added"); 	
+					alert("action cancelled"); 	
 				}
 			};
 			// updateCompany
@@ -248,21 +253,20 @@ app.controller(
 						function(response) {
 							$scope.updatecustomer = response;
 							if(response=="update complited"){
-								alert("customer was successfully updated");
+								$window.alert("customer was successfully updated");
 							}
 							else{
-								alert("customer was not updated id does not exist");
+								$window.alert("customer was not updated id does not exist");
 							}
 						});}
 				else{
 					alert("you canceled the action"); 	
 				}
 			};
-			function resetForm() {
-				
-				$scope.id="";
-				
-				
+			function myFunction() {
+			    document.getElementById("myForm").reset();
+			    document.getElementById("myForm1").reset();
+			    document.getElementById("myForm3").reset();
 			}
 			
 		});
@@ -392,17 +396,25 @@ app.controller(
 						});
 			};
 			// purchaseCoupon
-			$scope.purchaseCoupon = function() {
+			$scope.purchaseCoupon = function($window) {
 				var theAnswer = confirm("are you sure?");
 				if(theAnswer){
-					alert("coupon was successfully purchased");
-				$http.put(
-						"rest/customer/purchaseCoupon/" + $scope.id).success(
-						function(response) {
-							$scope.purchaseCoupon = response;
-						});}
+				
+				$http.put("rest/customer/purchaseCoupon/" + $scope.id).success(function(response) {
+							$scope.purchaseCoupon = response.data;
+							if(response.data=="Coupon was purchased successfuly."){
+								alert("coupon was successfully purchased");
+							}
+							else
+								{
+								alert("something went wrong");
+								}
+							
+						})
+						;
+				}
 				else{
-					alert("coupon wasnt successfully purchased"); 	
+					alert("action cancelled"); 	
 				}
 			};
 			$http.get("rest/customer/getTypes").success(function(response){
@@ -466,18 +478,16 @@ app.controller("uploadImage", function($scope,$http,$location,$routeParams,$root
     		});
      }
 });
-// date stringify
-function dateToString (date) {
-	var year = date.getFullYear();
-	var month = date.getMonth()+1;
-	var day = date.getDate();
-	
-	if (day < 10) { day = "0"+day;}
-	if (month <10) {month = "0"+month;}
-	return day+"/"+month+"/"+year;
+
+function myFunction() {
+    document.getElementById("myForm").reset();
+    document.getElementById("myForm1").reset();
+    document.getElementById("myForm3").reset();
 }
-
-
+function myFunction1() {
+    
+    location.reload();
+}
 
 // file extention validation
 function validateFile(file) {

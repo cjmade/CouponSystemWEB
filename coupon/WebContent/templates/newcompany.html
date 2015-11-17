@@ -6,11 +6,14 @@
 </div>
 
 		<div ng-controller="adminController" id="nav" class="form-group">
+		<form id="myForm3">
 			name<input type="text" ng-model="user" class="form-control"><br /> 
 			mail:     <input type="text" ng-model="mail" class="form-control"><br /> 
 			pass: <input type="text" ng-model="pass" class="form-control"> 
-			<input type="button" class="btn btn-primary"  value="add new company" ng-click="getnew()" /><br /> 
-				
+			</form>
+			<input type="button" class="btn btn-primary"  value="add  company" ng-click="getnew()" onclick="myFunction()"/>
+				<input	type="button" class="btn btn-primary"  value="add another "  onclick="myFunction1()" /><br /> 
+		<input	type="button" class="btn btn-success"  value="refresh page"  onclick="myFunction1()" />		
 		<a href="#/adminPage"  class="btn btn-success"> Back to Admin</a>
 		</div>
     

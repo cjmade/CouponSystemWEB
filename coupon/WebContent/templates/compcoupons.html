@@ -28,8 +28,8 @@
 					<td>{{coupon.title}}</td>
 					<td>{{coupon.id}}</td>
 					<td>{{coupon.amount}}</td>
-					<td>{{coupon.endDate}}</td>
-					<td>{{coupon.startDate}}</td>
+					<td>{{coupon.endDate| date:'yyyy-MM-dd'}}</td>
+					<td>{{coupon.startDate| date:'yyyy-MM-dd'}}</td>
 					<td>{{coupon.price}}</td>
 					<td>{{coupon.message}}</td>
 					<td>{{coupon.type}}</td>
@@ -43,7 +43,8 @@
 		<h1>delete coupon</h1>
 
 		id<input type="text" ng-model="id"><br /> <input
-			type="button"  class="btn btn-primary" value="delete coupon" ng-click="erasecoupon()" /><br />
+			type="button"  class="btn btn-primary" value="delete coupon" ng-click="erasecoupon()" />
+			<input	type="button" class="btn btn-primary"  value="delete another"  onclick="myFunction1()" /><br />
 	</div>
 	<h1>update coupon</h1>
 	<div ng-controller="companyController" id="nav" align="left">
@@ -120,8 +121,10 @@
 			price <input type="text" ng-model="price"size="1"> <br /> 
 		
 			<input type="button" class="btn btn-primary"
-			value="update coupon" ng-click="updatecoupon()" /><br />
+			value="update coupon" ng-click="updatecoupon()" />
+			<input	type="button" class="btn btn-primary"  value="update another"  onclick="myFunction1()" /><br />
 	</div>
+	<input	type="button" class="btn btn-success"  value="refresh page"  onclick="myFunction1()" />
 	<a href="#/CompanyPage"  class="btn btn-success"> Back to company</a>
 	<style >
 #header {

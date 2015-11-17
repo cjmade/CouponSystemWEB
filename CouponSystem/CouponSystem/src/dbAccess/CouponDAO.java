@@ -19,4 +19,6 @@ public interface CouponDAO
 	Collection<Coupon> getCouponByPrice(double price) throws WaitingForConnectionInterrupted, ClosedConnectionStatementCreationException, ConnectionCloseException  ;
 	Collection<Coupon> getCouponTillDate(String date) throws WaitingForConnectionInterrupted, ClosedConnectionStatementCreationException, ConnectionCloseException ;
 	Coupon getCoupon(String title) throws WaitingForConnectionInterrupted, ClosedConnectionStatementCreationException, ConnectionCloseException;
+	long getCouponid() throws WaitingForConnectionInterrupted, ClosedConnectionStatementCreationException,
+			ConnectionCloseException;
 }
