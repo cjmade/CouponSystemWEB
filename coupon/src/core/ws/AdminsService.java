@@ -1,11 +1,8 @@
 package core.ws;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -19,17 +16,9 @@ import javax.ws.rs.Produces;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.apache.catalina.Session;
-
-
-
 import facades.AdminFacade;
-import facades.CompanyFacade;
 import objects.ClientType;
 import objects.Company;
-import objects.Coupon;
 import objects.Customer;
 import system.CouponSystem;
 
