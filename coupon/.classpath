@@ -12,5 +12,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/shay/Downloads/jersey-multipart-1.5.jar"/>
 	<classpathentry kind="lib" path="C:/Users/shay/Downloads/resteasy-multipart-provider-2.3.5.final.jar.zip"/>
+	<classpathentry kind="src" path="/CouponSystemJEE"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

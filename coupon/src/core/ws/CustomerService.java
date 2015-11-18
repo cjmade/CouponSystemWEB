@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,18 +18,24 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import client.BusinessDelegate;
 import facades.CustomerFacade;
+import income.Income;
 import objects.ClientType;
 import objects.Coupon;
 import objects.CouponType;
 import system.CouponSystem;
 
-@Path("customer")
+@Path("/customer")
 public class CustomerService {
+	
+	@EJB
+	private BusinessDelegate bd;
+	
 	@Context
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	HttpSession session;
+	private HttpSession session;
 
 	@POST
 	@Path("login/{user}/{pass}")
@@ -156,24 +163,21 @@ String str=null;
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String purchaseCoupon(@PathParam("id")long id) {
-		
-		
 		HttpSession session = request.getSession(false);
-
+		CustomerFacade facade;
 		if (session == null) {
-
 			request.getSession(false).invalidate();
-
 		}
 
-		
 		try {
-			CustomerFacade facade = (CustomerFacade) session.getAttribute("facade");
-			
+			facade = (CustomerFacade) session.getAttribute("facade");
 			facade.purchaseCoupon(id);
 		} catch (Exception e) {
 			return "Purchase Failed " + e.getMessage();
 		}
+		//write the income
+		bd.storeIncome(new Income());
+		
 		return "Coupon was purchased successfuly.";
 	}
 	
