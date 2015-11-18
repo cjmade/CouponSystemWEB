@@ -1,6 +1,7 @@
 package core.ws;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 import client.BusinessDelegate;
 import facades.CustomerFacade;
 import income.Income;
+import income.IncomeType;
 import objects.ClientType;
 import objects.Coupon;
 import objects.CouponType;
@@ -175,10 +177,22 @@ String str=null;
 		} catch (Exception e) {
 			return "Purchase Failed " + e.getMessage();
 		}
-		//write the income
-		bd.storeIncome(new Income());
-		
+		//persist the income
+		ArrayList<Coupon> coupons = (ArrayList<Coupon>)facade.getAllPurchasedCoupons();
+		Income income;
+		for(Coupon c:coupons)
+		{
+			if(c.getId() == id)
+			{
+				income = new Income();
+				income.setName("Customer purchase");
+				income.setDescription(IncomeType.CUSTOMER_PURCHASE);
+				income.setAmount(c.getPrice());
+				income.setDate(Calendar.getInstance().getTime());
+				bd.storeIncome(income);
+				break;
+			}
+		}
 		return "Coupon was purchased successfuly.";
 	}
-	
 }

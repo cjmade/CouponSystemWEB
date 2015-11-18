@@ -3,6 +3,7 @@ package core.ws;
 import java.sql.SQLException;
 import java.util.Collection;
 
+import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -16,7 +17,10 @@ import javax.ws.rs.Produces;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
+import client.BusinessDelegate;
 import facades.AdminFacade;
+import income.Income;
 import objects.ClientType;
 import objects.Company;
 import objects.Customer;
@@ -24,11 +28,14 @@ import system.CouponSystem;
 
 @Path("admin")
 public class AdminsService {
+	
+	@EJB
+	private BusinessDelegate bd;
 
 	@Context
 	private HttpServletRequest request;
 
-@POST
+	@POST
 	@Path("login/{user}/{pass}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String login(@PathParam("user") String user, @PathParam("pass") String pass) {
@@ -53,10 +60,7 @@ public class AdminsService {
 		session.setAttribute("pass", pass);
 		return str;
 	}
-	
 
-	
-	
 	@GET
 	@Path("getAllCompanies")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -148,15 +152,11 @@ public class AdminsService {
 	public Collection<Company> getCompany(@PathParam("id") long id) {
 		Collection<Company> companies=null;
 		Company company=new Company();
-		
 		HttpSession session = request.getSession(false);
 
 		try {
 			AdminFacade facade = (AdminFacade) session.getAttribute("facade");
-		company=facade.getCompany((int) id);
-			
-			
-
+			company=facade.getCompany((int) id);
 		} catch (Exception e) {
 			return null;
 		}
@@ -259,5 +259,26 @@ public class AdminsService {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	@GET
+	@Path("/viewAllIncome")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Income> viewAllIncome(){
+		return bd.viewAllIncome();
+	}
+	
+	@GET
+	@Path("/viewCompanyIncome/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Income> viewCompanyIncome(@PathParam("id") long id) {
+		return bd.viewIncomeByCompany(id);
+	}
+	
+	@GET
+	@Path("/viewCustomerIncome/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Income> viewCustomerIncome(@PathParam("id") long id) {
+		return bd.viewIncomeByCompany(id);
 	}
 }

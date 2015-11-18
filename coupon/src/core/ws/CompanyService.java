@@ -5,9 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+
+import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,11 +29,13 @@ import javax.ws.rs.core.Response;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
+import client.BusinessDelegate;
 import exceptions.ClosedConnectionStatementCreationException;
 import exceptions.ConnectionCloseException;
 import exceptions.FailedToCreateCouponException;
 import facades.CompanyFacade;
-
+import income.Income;
+import income.IncomeType;
 import objects.ClientType;
 import objects.Coupon;
 import objects.CouponType;
@@ -39,7 +43,10 @@ import system.CouponSystem;
 
 @Path("company")
 public class CompanyService {
-
+	
+	@EJB
+	private BusinessDelegate bd;
+	
 	@Context
 	private HttpServletRequest request;
 	@Context
@@ -49,7 +56,6 @@ public class CompanyService {
 	@Path("login/{user}/{pass}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String login(@PathParam("user") String user, @PathParam("pass") String pass) {
-
 		if (request.getSession(false) != null) {
 			request.getSession(false).invalidate();
 		}
@@ -118,6 +124,15 @@ public class CompanyService {
 		coupon.setTitle(title);
 
 		facade.createCoupon(coupon);
+
+		//persist income
+		Income income = new Income();
+		income.setName("New coupon added");
+		income.setDescription(IncomeType.COMPANY_NEW_COUPON);
+		income.setAmount(100);
+		income.setDate(Calendar.getInstance().getTime());
+		bd.storeIncome(income);
+		
 		return "created";
 	}
 
@@ -149,6 +164,15 @@ public class CompanyService {
 		} catch (Exception e) {
 			return "update Failed " + e.getMessage();
 		}
+		
+		//persist income
+		Income income = new Income();
+		income.setName("A coupon was updated");
+		income.setDescription(IncomeType.COMPANY_UPDATE_COUPON);
+		income.setAmount(10);
+		income.setDate(Calendar.getInstance().getTime());
+		bd.storeIncome(income);
+		
 		return "Coupon was updated successfuly.";
 	}
 
@@ -238,7 +262,6 @@ public class CompanyService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Coupon> getCouponsByDate(@PathParam("year") String year, @PathParam("month") String month,
 			@PathParam("day") String day) {
-
 		Collection<Coupon> coupons;
 		HttpSession session = request.getSession(false);
 		if (session == null) {
@@ -306,5 +329,20 @@ public class CompanyService {
 			return false;
 		}
 		return true;
+	}
+	// TODO Add web service
+	// view generated income
+	@GET
+	@Path("/viewIncome")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Income> viewIncome(){
+		Collection<Coupon> coupons;
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			request.getSession(false).invalidate();
+		}
+		CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
+		
+		return bd.viewIncomeByCompany(facade.getCompanyId());
 	}
 }
