@@ -109,6 +109,7 @@ public class Coupon {
 				+ ", type=" + type 
 				+ ", message=" + message 
 				+ ", price=" + price 
+				+ ", image=" + image 
 				+ "]";
 	}
 	@Override

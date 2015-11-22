@@ -375,6 +375,7 @@ public class CustomerDBDAO implements CustomerDAO
 				tempCoupon.setAmount(couponsFound.getInt("AMOUNT"));
 				tempCoupon.setType(CouponType.valueOf(couponsFound.getString("COUPON_TYPE")));
 				tempCoupon.setMessage(couponsFound.getString("MESSAGE"));
+				tempCoupon.setImage(couponsFound.getString("IMAGE"));
 				tempCoupon.setPrice(couponsFound.getDouble("PRICE"));
 				// Add it to the Collection
 				allCoupons.add(tempCoupon);

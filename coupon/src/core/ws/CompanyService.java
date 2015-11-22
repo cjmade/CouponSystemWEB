@@ -277,7 +277,7 @@ public class CompanyService {
 
 		// Save File
 		
-		String location = "C://Users/shay/Downloads/images/"
+		String location =request.getServletContext().getRealPath("") + "/images/"
 				+ fileDetails.getFileName();
 		boolean result = saveFile(input, location);
 
