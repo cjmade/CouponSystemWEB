@@ -290,7 +290,7 @@ public class CompanyService {
 
 		// Save File
 		
-		String location = "C://Users/shay/Downloads/images/"
+		String location =request.getServletContext().getRealPath("") + "/images/"
 				+ fileDetails.getFileName();
 		boolean result = saveFile(input, location);
 
@@ -336,13 +336,11 @@ public class CompanyService {
 	@Path("/viewIncome")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Income> viewIncome(){
-		Collection<Coupon> coupons;
 		HttpSession session = request.getSession(false);
 		if (session == null) {
 			request.getSession(false).invalidate();
 		}
 		CompanyFacade facade = (CompanyFacade) session.getAttribute("facade");
-		
 		return bd.viewIncomeByCompany(facade.getCompanyId());
 	}
 }
