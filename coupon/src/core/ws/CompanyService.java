@@ -333,7 +333,7 @@ public class CompanyService {
 	// TODO Add web service
 	// view generated income
 	@GET
-	@Path("/viewIncome")
+	@Path("viewIncome")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Income> viewIncome(){
 		HttpSession session = request.getSession(false);

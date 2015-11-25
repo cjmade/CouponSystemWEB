@@ -65,6 +65,14 @@ app.config(function($routeProvider) {
 		templateUrl: "templates/customer.html",
 		controller: 'companyController'
 	})
+	.when('/incomes', {
+		templateUrl: "templates/incomes.html",
+		controller: 'companyController'
+	})
+	.when('/compincomes', {
+		templateUrl: "templates/compincomes.html",
+		controller: 'companyController'
+	})
 	.when('/upload/:id', {
 		templateUrl: "templates/uploadImage.html",		
 	})
@@ -195,7 +203,20 @@ app.controller(
 					alert("company wasnt successfully updated"); 	
 				}
 			};
-			
+			$scope.viewAllIncome = function() {
+				$http.get(
+						"rest/company/viewAllIncome").success(
+						function(response) {
+							$scope.allincome= response;
+						});
+			};
+			$scope.viewCompanyIncome = function() {
+				$http.get(
+						"rest/company/viewCompanyIncome/"+$scope.id).success(
+						function(response) {
+							$scope.companyincome= response;
+						});
+			};
 // /////customer/////////
 			// get all customers
 			$scope.viewAllcust = function() {
@@ -262,6 +283,13 @@ app.controller(
 				else{
 					alert("you canceled the action"); 	
 				}
+			};
+			$scope.viewCustomerIncome = function() {
+				$http.get(
+						"rest/company/viewCustomerIncome/"+$scope.id).success(
+						function(response) {
+							$scope.customerincome= response;
+						});
 			};
 			function myFunction() {
 			    document.getElementById("myForm").reset();
@@ -357,7 +385,13 @@ app.controller(
 							$scope.getbydate= response;
 						});
 			};
-		
+			$scope.getIncome = function() {
+				$http.get(
+						"rest/company/viewIncome").success(
+						function(response) {
+							$scope.income= response;
+						});
+			};
 		});
 // ///////customer service////////
 app.controller(

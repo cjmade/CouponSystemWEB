@@ -262,23 +262,23 @@ public class AdminsService {
 	}
 
 	@GET
-	@Path("/viewAllIncome")
+	@Path("viewAllIncome")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Income> viewAllIncome(){
 		return bd.viewAllIncome();
 	}
 	
 	@GET
-	@Path("/viewCompanyIncome/{id}")
+	@Path("viewCompanyIncome/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Income> viewCompanyIncome(@PathParam("id") long id) {
 		return bd.viewIncomeByCompany(id);
 	}
 	
 	@GET
-	@Path("/viewCustomerIncome/{id}")
+	@Path("viewCustomerIncome/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Income> viewCustomerIncome(@PathParam("id") long id) {
-		return bd.viewIncomeByCompany(id);
+		return bd.viewIncomeByCustomer(id);
 	}
 }
