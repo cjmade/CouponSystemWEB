@@ -3,6 +3,8 @@
 	<name>CouponSystem</name>
 	<comment></comment>
 	<projects>
+		<project>coupon</project>
+		<project>CouponSystemJEE</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
