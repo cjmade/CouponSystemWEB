@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,9 +29,6 @@ import system.CouponSystem;
 
 @Path("/customer")
 public class CustomerService {
-	
-	@EJB
-	private BusinessDelegate bd;
 	
 	@Context
 	private HttpServletRequest request;
@@ -189,6 +185,7 @@ String str=null;
 				income.setDescription(IncomeType.CUSTOMER_PURCHASE);
 				income.setAmount(c.getPrice());
 				income.setDate(Calendar.getInstance().getTime());
+				BusinessDelegate bd = new BusinessDelegate();
 				bd.storeIncome(income);
 				break;
 			}

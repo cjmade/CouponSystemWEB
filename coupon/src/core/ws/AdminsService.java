@@ -3,7 +3,6 @@ package core.ws;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -28,9 +27,6 @@ import system.CouponSystem;
 
 @Path("admin")
 public class AdminsService {
-	
-	@EJB
-	private BusinessDelegate bd;
 
 	@Context
 	private HttpServletRequest request;
@@ -265,6 +261,7 @@ public class AdminsService {
 	@Path("viewAllIncome")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Income> viewAllIncome(){
+		BusinessDelegate bd = new BusinessDelegate();
 		return bd.viewAllIncome();
 	}
 	
@@ -272,6 +269,7 @@ public class AdminsService {
 	@Path("viewCompanyIncome/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Income> viewCompanyIncome(@PathParam("id") long id) {
+		BusinessDelegate bd = new BusinessDelegate();
 		return bd.viewIncomeByCompany(id);
 	}
 	
@@ -279,6 +277,7 @@ public class AdminsService {
 	@Path("viewCustomerIncome/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Income> viewCustomerIncome(@PathParam("id") long id) {
+		BusinessDelegate bd = new BusinessDelegate();
 		return bd.viewIncomeByCustomer(id);
 	}
 }
